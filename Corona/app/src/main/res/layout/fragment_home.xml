@@ -19,7 +19,7 @@
         android:textStyle="bold" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
 
@@ -38,12 +38,12 @@
                 android:src="@mipmap/ic_vietnam" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:paddingHorizontal="15dp"
                 android:text="Việt Nam"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -57,20 +57,23 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@mipmap/ic_vietnam" />
+                android:padding="5dp"
+                android:background="@drawable/img_global"
+                android:src="@mipmap/ic_global" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:paddingHorizontal="15dp"
-                android:text="Việt Nam"
-                android:textSize="20sp"
+                android:text="Thế Giới"
+                android:textSize="18sp"
                 android:textStyle="normal" />
         </LinearLayout>
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
@@ -95,16 +98,17 @@
             android:background="@drawable/custom_info_box">
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="268"
-                    android:textColor="@color/colorYellow"
-                    android:textSize="18dp"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tv_infected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="268"
+                android:textColor="@color/colorYellow"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
-                <TextView
+            <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -115,6 +119,7 @@
                     android:paddingVertical="5dp"/>
 
                 <TextView
+                    android:id="@+id/tv_live_infected"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -136,6 +141,7 @@
 
 
             <TextView
+                android:id="@+id/tv_dead"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -155,6 +161,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_live_death"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -176,6 +183,7 @@
 
 
             <TextView
+                android:id="@+id/tv_recover"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -195,6 +203,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_live_recover"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -206,6 +215,16 @@
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
+    <TextView
+        android:id="@+id/tv_time_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cập nhật: 00:24, 01/05"
+        android:textColor="@color/colorBlack"
+        android:textSize="14dp"
+        android:paddingVertical="5dp"
+        android:paddingHorizontal="20dp"
+        />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

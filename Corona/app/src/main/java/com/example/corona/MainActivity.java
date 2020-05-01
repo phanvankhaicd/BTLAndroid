@@ -20,22 +20,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, "pk.eyJ1IjoicGhhbnZhbmtoYWljZCIsImEiOiJjazlrNHp4ZzAwMWtjM2VsYm5qdnZvZ3gxIn0.3-bzqDyNVJ9vxYgSodPeHA");
         setContentView(R.layout.activity_main);
-//        mapView = findViewById(R.id.mapView);
-//        mapView.onCreate(savedInstanceState);
-//        mapView.getMapAsync(new OnMapReadyCallback() {
-//            @Override
-//            public void onMapReady(@NonNull MapboxMap mapboxMap) {
-//                mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
-//                    @Override
-//                    public void onStyleLoaded(@NonNull Style style) {
-//
-//// Map is set up and the style has loaded. Now you can add data or make other map adjustments.
-//
-//
-//                    }
-//                });
-//            }
-//        });
     }
 
     @Override
