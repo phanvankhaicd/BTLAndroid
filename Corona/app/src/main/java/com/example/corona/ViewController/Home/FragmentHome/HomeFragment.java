@@ -204,7 +204,7 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
 
     void getDataVN() {
 
-        DataServices.getAPIService().getCoronaVN().enqueue(new Callback<CoronaVN>() {
+        DataServices.getAPIServiceOutsite().getCoronaVN().enqueue(new Callback<CoronaVN>() {
             @Override
             public void onResponse(Call<CoronaVN> call, Response<CoronaVN> response) {
                 if (response.isSuccessful()) {
@@ -229,7 +229,7 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
     }
     void getDataGlobal() {
 
-        DataServices.getAPIService().getCoronaGlobal().enqueue(new Callback<CoronaGlobal>() {
+        DataServices.getAPIServiceOutsite().getCoronaGlobal().enqueue(new Callback<CoronaGlobal>() {
             @Override
             public void onResponse(Call<CoronaGlobal> call, Response<CoronaGlobal> response) {
                 if (response.isSuccessful()) {

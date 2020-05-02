@@ -33,6 +33,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="01/05/2020"
@@ -56,6 +57,7 @@
                 android:layout_marginBottom="15dp">
 
                 <TextView
+                    android:id="@+id/tv_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="An toàn"
@@ -66,6 +68,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/tv_time"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:gravity="end"
@@ -88,6 +91,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/tv_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Bình thường"

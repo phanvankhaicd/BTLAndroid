@@ -1,21 +1,25 @@
 package com.example.corona.Network;
 
 
-
 import com.example.corona.Model.Global.CoronaGlobal;
+import com.example.corona.Model.User;
 import com.example.corona.Model.VN.CoronaVN;
 
+import java.util.Map;
+
 import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 
 public interface APIServices {
-    @GET("countries/vn")
-    Call<CoronaVN> getCoronaVN();
-    @GET("timeline")
-    Call<CoronaGlobal> getCoronaGlobal();
-//    https://corona-api.com/timeline
-//    @GET("/users/products")
-//    Call<ListProductResult> getListProduct();
+
+    @FormUrlEncoded
+    @POST("login")
+    Call<User> login(@FieldMap Map<String,String> map);
+
 }
