@@ -10,9 +10,9 @@ public class RetrofitClient {
     private static Retrofit retrofitOutsite = null;
     private static Retrofit retrofit = null;
     private static String BASE_URL_OUTSITE = " https://corona-api.com/";
-    //    private static String BASE_URL = "http://127.0.0.1:8082/";
+    private static String BASE_URL = "http://192.168.137.1:8082/";
     //May khac
-    private static String BASE_URL = "http://10.0.3.2:8082/";
+//    private static String BASE_URL = "http://10.0.3.2:8082/";
     //Genymotion
 
     public static Retrofit getClientOutsite() {

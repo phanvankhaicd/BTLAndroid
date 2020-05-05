@@ -11,4 +11,8 @@
     <color name="colorYellow2">#FFF171</color>
     <color name="colorRed2">#FF9193</color>
     <color name="colorGreen2">#92FD75</color>
+    <color name="colorRedPhone">#4C0E00</color>
+    <color name="colorHotline">#F8D9D9</color>
+    <color name="colorGray">#D6D5D5</color>
+
 </resources>

@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/action_home"
-        android:title="@string/app_name"
-        android:icon="@drawable/ic_launcher_background" />
-    <item android:id="@+id/action_declare"
-        android:title="Sức khoẻ"
-        android:icon="@drawable/ic_launcher_background" />
-    <item android:id="@+id/action_q_and_a"
-        android:title="@string/app_name"
-        android:icon="@drawable/ic_launcher_background" />
-    <item android:id="@+id/action_user"
-        android:title="@string/app_name"
-        android:icon="@drawable/ic_launcher_background" />
+    <item
+        android:id="@+id/action_home"
+        android:icon="@mipmap/ic_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/action_declare"
+        android:icon="@mipmap/ic_note"
+        android:title="Sức khoẻ" />
+    <item
+        android:id="@+id/action_q_and_a"
+        android:icon="@mipmap/ic_mess"
+        android:title="Phản ánh" />
+    <item
+        android:id="@+id/action_user"
+        android:icon="@mipmap/ic_menu"
+        android:title="Danh mục" />
 </menu>
