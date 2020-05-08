@@ -3,6 +3,7 @@ package com.example.corona.Network;
 
 
 import com.example.corona.Model.Global.CoronaGlobal;
+import com.example.corona.Model.MapNcovi.MapNcovi;
 import com.example.corona.Model.VN.CoronaVN;
 
 import retrofit2.Call;
@@ -15,6 +16,10 @@ public interface APIServicesOutsite {
     Call<CoronaVN> getCoronaVN();
     @GET("timeline")
     Call<CoronaGlobal> getCoronaGlobal();
+
+    @GET("api/patientapi/list")
+    Call<MapNcovi> getLonLat();
+
 //    https://corona-api.com/timeline
 //    @GET("/users/products")
 //    Call<ListProductResult> getListProduct();

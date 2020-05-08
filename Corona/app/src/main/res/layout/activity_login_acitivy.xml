@@ -40,7 +40,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Tài khoản"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:text="DucMP"
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Password Label -->
@@ -55,6 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Mật khẩu"
+                android:text="ahihi123"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 

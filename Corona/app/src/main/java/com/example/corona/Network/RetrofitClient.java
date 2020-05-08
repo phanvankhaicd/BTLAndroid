@@ -9,10 +9,14 @@ public class RetrofitClient {
 
     private static Retrofit retrofitOutsite = null;
     private static Retrofit retrofit = null;
-    private static String BASE_URL_OUTSITE = " https://corona-api.com/";
-    private static String BASE_URL = "http://192.168.137.1:8082/";
+    private static Retrofit retrofitBoYTe = null;
+
+    private static String BASE_URL_OUTSITE = "https://corona-api.com/";
+    private static String BASE_URL_BOYTE = "https://maps.vnpost.vn/apps/covid19/";
+
+    //    private static String BASE_URL = "http://192.168.137.1:8082/";
     //May khac
-//    private static String BASE_URL = "http://10.0.3.2:8082/";
+    private static String BASE_URL = "http://10.0.3.2:8082/";
     //Genymotion
 
     public static Retrofit getClientOutsite() {
@@ -23,6 +27,15 @@ public class RetrofitClient {
                     .build();
         }
         return retrofitOutsite;
+    }
+    public static Retrofit getClientNcovi() {
+        if (retrofitBoYTe == null) {
+            retrofitBoYTe = new Retrofit.Builder()
+                    .baseUrl(BASE_URL_BOYTE)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return retrofitBoYTe;
     }
 
     public static Retrofit getClient() {

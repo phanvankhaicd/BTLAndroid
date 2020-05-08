@@ -11,9 +11,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.corona.Model.Token;
 import com.example.corona.Model.User;
 import com.example.corona.Network.DataServices;
 import com.example.corona.R;
+import com.example.corona.ViewController.Home.MainActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +23,9 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.example.corona.Util.AppConfig.getToken;
+import static com.example.corona.Util.AppConfig.setToken;
 
 //import com.orhanobut.logger.Logger;
 //
@@ -42,6 +47,11 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_acitivy);
         init();
+
+        String token = getToken(this);
+        if(token!=""){
+            navigateHome();
+        }
     }
 
     void init() {
@@ -51,27 +61,32 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
         btnLogin.setOnClickListener(this);
     }
 
+    void navigateHome(){
+        Intent intent = new Intent(LoginAcitivy.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
     void loginAction(String username, String password) {
 
-        Map<String, String> map = new HashMap<>();
-        map.put("username", username);
-        map.put("password", password);
-
-        DataServices.getAPIService().login(map)
-                .enqueue(new Callback<User>() {
+        User user =new User(username,password);
+        DataServices.getAPIService().login(user)
+                .enqueue(new Callback<Token>() {
                     @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
-                        if (response.isSuccessful()) {
-                            Toast.makeText(LoginAcitivy.this, "ádasd", Toast.LENGTH_SHORT).show();
+                    public void onResponse(Call<Token> call, Response<Token> response) {
+                        if(response.isSuccessful()){
+                            setToken(LoginAcitivy.this,response.body().getToken());
+                            Toast.makeText(LoginAcitivy.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                            navigateHome();
                         }
-                        else {
-                            Toast.makeText(LoginAcitivy.this, "khong ok", Toast.LENGTH_SHORT).show();
+                        else{
+                            Toast.makeText(LoginAcitivy.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<User> call, Throwable t) {
-                        Toast.makeText(LoginAcitivy.this, "bad"+t, Toast.LENGTH_SHORT).show();
+                    public void onFailure(Call<Token> call, Throwable t) {
+                        Toast.makeText(LoginAcitivy.this, " k oke", Toast.LENGTH_SHORT).show();
+
                     }
                 });
 //        // valid data

@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.corona.Model.Global.CoronaGlobal;
 import com.example.corona.Model.Global.DataG;
+import com.example.corona.Model.MapNcovi.MapNcovi;
 import com.example.corona.Model.VN.CoronaVN;
 import com.example.corona.Model.VN.Data;
 import com.example.corona.Network.DataServices;
@@ -141,16 +142,37 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
 
     private void initIconCoordinates() {
         symbolLayerIconFeatureList = new ArrayList<>();
-        symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(10.338784, 49.481615)));
-        symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(15.081775, 49.957444)));
-        symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(11.810747, 50.53269)));
-        symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(16.308411, 51.35705)));
-        symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(19.661215, 49.161803)));
-        symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(16.799065, 46.864746)));
-        symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(13.364485, 52.764672)));
-        symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(8.457943, 51.203595)));
-        symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(12.873831, 51.459068)));
-        symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(14.836448, 52.814126)));
+        getLonLat();
+
+//        symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(10.338784, 49.481615)));
+//        symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(15.081775, 49.957444)));
+//        symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(11.810747, 50.53269)));
+//        symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(16.308411, 51.35705)));
+//        symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(19.661215, 49.161803)));
+//        symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(16.799065, 46.864746)));
+//        symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(13.364485, 52.764672)));
+//        symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(8.457943, 51.203595)));
+//        symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(12.873831, 51.459068)));
+//        symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(14.836448, 52.814126)));
+    }
+
+    private void getLonLat() {
+        DataServices.getAPIServiceBoYTe().getLonLat()
+                .enqueue(new Callback<MapNcovi>() {
+                    @Override
+                    public void onResponse(Call<MapNcovi> call, Response<MapNcovi> response) {
+                        if (response.isSuccessful()) {
+                            for (com.example.corona.Model.MapNcovi.Data i : response.body().getData()) {
+                                symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(i.getLng(), i.getLat())));
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<MapNcovi> call, Throwable t) {
+
+                    }
+                });
     }
 
     private void init(View view) {
@@ -227,6 +249,7 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
             }
         });
     }
+
     void getDataGlobal() {
 
         DataServices.getAPIServiceOutsite().getCoronaGlobal().enqueue(new Callback<CoronaGlobal>() {
@@ -242,7 +265,7 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
                     tvLiveDeath.setText("+ " + numberWithComas(data.get(0).getNewDeaths().toString()));
                     tvLiveRecover.setText("+ " + numberWithComas(data.get(0).getNewRecovered().toString()));
                     tvLiveInfected.setText("+ " + numberWithComas(data.get(0).getNewConfirmed().toString()));
-                    tvTimeUpdate.setText("Cập nhật: " +time );
+                    tvTimeUpdate.setText("Cập nhật: " + time);
                 }
             }
 
@@ -262,7 +285,7 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ln_vietnam:
                 getDataVN();
                 break;

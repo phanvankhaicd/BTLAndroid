@@ -23,6 +23,12 @@ public class AppConfig {
 
         return formatter.format(amount);
     }
+    public static String timeConverse(String time) {
+        String[] strTime = time.split("T");
+        String[] date = strTime[0].split("-");
+
+        return date[2] + "/" + date[1] + "/" + date[0] + " " + strTime[1].split("\\.")[0];
+    }
 
 
 }

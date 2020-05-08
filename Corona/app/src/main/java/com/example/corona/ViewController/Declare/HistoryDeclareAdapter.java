@@ -8,17 +8,20 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.corona.Model.Declare;
 import com.example.corona.Model.HistoryDeclare;
 import com.example.corona.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.corona.Util.AppConfig.timeConverse;
+
 public class HistoryDeclareAdapter extends BaseAdapter {
-    ArrayList<HistoryDeclare> data;
+    ArrayList<Declare> data;
     Context context;
 
-    public HistoryDeclareAdapter(ArrayList<HistoryDeclare> data, Context context) {
+    public HistoryDeclareAdapter(ArrayList<Declare> data, Context context) {
         this.data = data;
         this.context = context;
     }
@@ -50,11 +53,13 @@ public class HistoryDeclareAdapter extends BaseAdapter {
         tvStatus = convertView.findViewById(R.id.tv_status);
         tvInfo = convertView.findViewById(R.id.tv_info);
 
-        HistoryDeclare i = data.get(position);
+        Declare i = data.get(position);
+        String[] time = timeConverse(i.getCreatedAt()).split(" ");
 
-        tvDate.setText("01/01/2020");
-        tvTime.setText("20:20");
-        tvStatus.setText(i.getStatus()== "BAD" ? "Nguy cơ nhiễm bệnh" : "Bình thường");
+        tvDate.setText(time[0]);
+        tvTime.setText(time[1]);
+        tvStatus.setText(i.getStatus().equals("BAD") ? "Nguy cơ nhiễm bệnh" : "Bình thường");
+        tvStatus.setBackgroundResource(i.getStatus().equals("BAD") ? R.drawable.custom_history_bad : R.drawable.custom_history_safe);
         tvInfo.setText(i.getDescription());
 
         return convertView;
