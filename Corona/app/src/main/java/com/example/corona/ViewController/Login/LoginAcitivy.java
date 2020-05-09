@@ -15,6 +15,7 @@ import com.example.corona.Model.Token;
 import com.example.corona.Model.User;
 import com.example.corona.Network.DataServices;
 import com.example.corona.R;
+import com.example.corona.Util.LoadingDialog;
 import com.example.corona.ViewController.Home.MainActivity;
 
 import java.util.HashMap;
@@ -41,7 +42,7 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
 
     EditText edtUserName, edtPassword;
     Button btnLogin;
-
+    LoadingDialog loadingDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +60,7 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
         edtPassword = findViewById(R.id.edt_password);
         btnLogin = findViewById(R.id.btn_login);
         btnLogin.setOnClickListener(this);
+        loadingDialog = new LoadingDialog(LoginAcitivy.this );
     }
 
     void navigateHome(){
@@ -76,17 +78,19 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
                         if(response.isSuccessful()){
                             setToken(LoginAcitivy.this,response.body().getToken());
                             Toast.makeText(LoginAcitivy.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                            loadingDialog.dismissLoadingDialog();
                             navigateHome();
                         }
                         else{
                             Toast.makeText(LoginAcitivy.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+                            loadingDialog.dismissLoadingDialog();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Token> call, Throwable t) {
                         Toast.makeText(LoginAcitivy.this, " k oke", Toast.LENGTH_SHORT).show();
-
+                        loadingDialog.dismissLoadingDialog();
                     }
                 });
 //        // valid data
@@ -123,6 +127,7 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login: {
+                loadingDialog.startLoadingDialog();
                 loginAction(
                         edtUserName.getText().toString(),
                         edtPassword.getText().toString());

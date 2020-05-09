@@ -20,6 +20,7 @@ import com.example.corona.Model.VN.CoronaVN;
 import com.example.corona.Model.VN.Data;
 import com.example.corona.Network.DataServices;
 import com.example.corona.R;
+import com.example.corona.Util.LoadingDialog;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.geojson.Feature;
@@ -68,7 +69,7 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
     private static final String ICON_SOURCE_ID = "ICON_SOURCE_ID";
     private static final String ICON_ID = "ICON_ID";
     private static final String ICON_LAYER_ID = "ICON_LAYER_ID";
-
+    LoadingDialog loadingDialog;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -76,7 +77,6 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         init(view);
         initIconCoordinates();
-
         VN.setOnClickListener(this);
         GLOBAL.setOnClickListener(this);
         Mapbox.getInstance(getContext(), "pk.eyJ1IjoicGhhbnZhbmtoYWljZCIsImEiOiJjazlrNHp4ZzAwMWtjM2VsYm5qdnZvZ3gxIn0.3-bzqDyNVJ9vxYgSodPeHA");
@@ -139,7 +139,19 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
         getDataVN();
         return view;
     }
-
+    private void init(View view) {
+        tvDead = view.findViewById(R.id.tv_dead);
+        tvInfected = view.findViewById(R.id.tv_infected);
+        tvRecover = view.findViewById(R.id.tv_recover);
+        tvLiveDeath = view.findViewById(R.id.tv_live_death);
+        tvLiveInfected = view.findViewById(R.id.tv_live_infected);
+        tvLiveRecover = view.findViewById(R.id.tv_live_recover);
+        tvTimeUpdate = view.findViewById(R.id.tv_time_update);
+        tvInfo = view.findViewById(R.id.tv_info);
+        VN = view.findViewById(R.id.ln_vietnam);
+        GLOBAL = view.findViewById(R.id.ln_globle);
+        loadingDialog = new LoadingDialog(getActivity());
+    }
     private void initIconCoordinates() {
         symbolLayerIconFeatureList = new ArrayList<>();
         getLonLat();
@@ -164,7 +176,10 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
                         if (response.isSuccessful()) {
                             for (com.example.corona.Model.MapNcovi.Data i : response.body().getData()) {
                                 symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(i.getLng(), i.getLat())));
+
                             }
+                        }
+                        else{
                         }
                     }
 
@@ -175,18 +190,7 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
                 });
     }
 
-    private void init(View view) {
-        tvDead = view.findViewById(R.id.tv_dead);
-        tvInfected = view.findViewById(R.id.tv_infected);
-        tvRecover = view.findViewById(R.id.tv_recover);
-        tvLiveDeath = view.findViewById(R.id.tv_live_death);
-        tvLiveInfected = view.findViewById(R.id.tv_live_infected);
-        tvLiveRecover = view.findViewById(R.id.tv_live_recover);
-        tvTimeUpdate = view.findViewById(R.id.tv_time_update);
-        tvInfo = view.findViewById(R.id.tv_info);
-        VN = view.findViewById(R.id.ln_vietnam);
-        GLOBAL = view.findViewById(R.id.ln_globle);
-    }
+
 
     @SuppressWarnings({"MissingPermission"})
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
@@ -225,7 +229,7 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
     }
 
     void getDataVN() {
-
+        loadingDialog.startLoadingDialog();
         DataServices.getAPIServiceOutsite().getCoronaVN().enqueue(new Callback<CoronaVN>() {
             @Override
             public void onResponse(Call<CoronaVN> call, Response<CoronaVN> response) {
@@ -240,12 +244,17 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
                     tvLiveRecover.setText("+ " + data.getToday().getDeaths());
                     tvLiveInfected.setText("+ " + data.getToday().getConfirmed());
                     tvTimeUpdate.setText("Cập nhật: " + time);
+                    loadingDialog.dismissLoadingDialog();
+
+                }
+                else{
+                    loadingDialog.dismissLoadingDialog();
                 }
             }
 
             @Override
             public void onFailure(Call<CoronaVN> call, Throwable t) {
-
+                loadingDialog.dismissLoadingDialog();
             }
         });
     }
@@ -266,6 +275,9 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
                     tvLiveRecover.setText("+ " + numberWithComas(data.get(0).getNewRecovered().toString()));
                     tvLiveInfected.setText("+ " + numberWithComas(data.get(0).getNewConfirmed().toString()));
                     tvTimeUpdate.setText("Cập nhật: " + time);
+                }
+                else{
+
                 }
             }
 

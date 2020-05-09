@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.corona.Model.UserInfo;
 import com.example.corona.Network.DataServices;
 import com.example.corona.R;
+import com.example.corona.Util.LoadingDialog;
 
 import java.util.Calendar;
 
@@ -32,6 +33,7 @@ public class UserInfoScreen extends AppCompatActivity implements View.OnClickLis
     String dateTime;
     Toolbar toolbar;
     RadioButton rdNam, rdNu;
+    LoadingDialog loadingDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +53,7 @@ public class UserInfoScreen extends AppCompatActivity implements View.OnClickLis
     }
 
     private void init() {
+        loadingDialog = new LoadingDialog(UserInfoScreen.this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         edtName = findViewById(R.id.edt_name);
         edtAddress = findViewById(R.id.edt_address);
@@ -64,6 +67,7 @@ public class UserInfoScreen extends AppCompatActivity implements View.OnClickLis
     }
 
     private void getUserInfo() {
+        loadingDialog.startLoadingDialog();
         DataServices.getAPIService().getUserInfo(getToken(UserInfoScreen.this))
                 .enqueue(new Callback<UserInfo>() {
                     @Override
@@ -80,15 +84,21 @@ public class UserInfoScreen extends AppCompatActivity implements View.OnClickLis
                                 rdNu.setChecked(true);
                             else
                                 rdNam.setChecked(true);
+                            loadingDialog.dismissLoadingDialog();
+
                         }
                         else{
                             Toast.makeText(UserInfoScreen.this, "Cập nhật không thành công", Toast.LENGTH_SHORT).show();
+                            loadingDialog.dismissLoadingDialog();
+
                         }
                     }
 
                     @Override
                     public void onFailure(Call<UserInfo> call, Throwable t) {
                         Toast.makeText(UserInfoScreen.this, "Vui lòng kiểm tra lại đường truyền", Toast.LENGTH_SHORT).show();
+                        loadingDialog.dismissLoadingDialog();
+
                     }
                 });
     }

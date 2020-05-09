@@ -18,6 +18,7 @@ import com.example.corona.Model.HistoryDeclare;
 import com.example.corona.Network.Body.CreateDeclare;
 import com.example.corona.Network.DataServices;
 import com.example.corona.R;
+import com.example.corona.Util.LoadingDialog;
 import com.example.corona.ViewController.Declare.HistoryDeclareAdapter;
 
 import java.util.ArrayList;
@@ -43,6 +44,8 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
     HistoryDeclareAdapter adapter;
     CheckBox cbHo, cbSot, cbKhoTho, cbDauNguoi, cbTot;
     Button btnSent;
+    LoadingDialog loadingDialog;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -154,6 +157,7 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
     }
 
     void getDeclare() {
+        loadingDialog.startLoadingDialog();
         DataServices.getAPIService().callHistoryDeclare("0", "10", getToken(getContext()))
                 .enqueue(new Callback<List<Declare>>() {
                     @Override
@@ -163,12 +167,17 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
                             data.clear();
                             data.addAll((ArrayList<Declare>) response.body());
                             adapter.notifyDataSetChanged();
+                            loadingDialog.dismissLoadingDialog();
+                        }
+                        else{
+                            loadingDialog.dismissLoadingDialog();
+
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<Declare>> call, Throwable t) {
-
+                        loadingDialog.dismissLoadingDialog();
                     }
                 });
     }
@@ -181,6 +190,7 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
         cbDauNguoi = view.findViewById(R.id.checkbox_dau_nguoi);
         cbTot = view.findViewById(R.id.checkbox_suc_khoe_tot);
         btnSent = view.findViewById(R.id.btn_sent);
+        loadingDialog = new LoadingDialog(getActivity());
     }
 
 
