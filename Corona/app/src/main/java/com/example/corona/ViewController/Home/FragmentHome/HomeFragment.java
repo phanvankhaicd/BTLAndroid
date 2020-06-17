@@ -81,8 +81,8 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         init(view);
         initIconCoordinates();
-        VN.setOnClickListener(this);
-        GLOBAL.setOnClickListener(this);
+        handleClick();
+
         Mapbox.getInstance(getContext(), "pk.eyJ1IjoicGhhbnZhbmtoYWljZCIsImEiOiJjazlrNHp4ZzAwMWtjM2VsYm5qdnZvZ3gxIn0.3-bzqDyNVJ9vxYgSodPeHA");
         SupportMapFragment mapFragment;
         if (savedInstanceState == null) {
@@ -143,6 +143,13 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
         getDataVN();
         return view;
     }
+
+    private void handleClick() {
+        VN.setOnClickListener(this);
+        GLOBAL.setOnClickListener(this);
+        btnAnalytic.setOnClickListener(this);
+    }
+
     private void init(View view) {
         btnAnalytic = view.findViewById(R.id.btn_analytic);
         tvDead = view.findViewById(R.id.tv_dead);
