@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.corona.Model.Login.UserInfo;
 import com.example.corona.Model.Token;
 import com.example.corona.Model.User;
 import com.example.corona.Network.DataServices;
@@ -178,14 +179,20 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
 
         User user =new User(username,password);
         DataServices.getAPIService().login(user)
-                .enqueue(new Callback<Token>() {
+                .enqueue(new Callback<UserInfo>() {
                     @Override
-                    public void onResponse(Call<Token> call, Response<Token> response) {
+                    public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
                         if(response.isSuccessful()){
-                            setToken(LoginAcitivy.this,response.body().getToken());
-                            Toast.makeText(LoginAcitivy.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                            loadingDialog.dismissLoadingDialog();
-                            navigateHome();
+                            if(response.body().getErrorCode() == 0)
+                            {
+                                setToken(LoginAcitivy.this, response.body().getData().getToken());
+                                Toast.makeText(LoginAcitivy.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                loadingDialog.dismissLoadingDialog();
+                                navigateHome();}
+                            else {
+                                Toast.makeText(LoginAcitivy.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                loadingDialog.dismissLoadingDialog();
+                            }
                         }
                         else{
                             Toast.makeText(LoginAcitivy.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
@@ -194,7 +201,7 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
                     }
 
                     @Override
-                    public void onFailure(Call<Token> call, Throwable t) {
+                    public void onFailure(Call<UserInfo> call, Throwable t) {
                         Toast.makeText(LoginAcitivy.this, " k oke", Toast.LENGTH_SHORT).show();
                         loadingDialog.dismissLoadingDialog();
                     }

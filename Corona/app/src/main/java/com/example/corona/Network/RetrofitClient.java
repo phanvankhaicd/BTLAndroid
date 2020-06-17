@@ -14,12 +14,12 @@ public class RetrofitClient {
     private static String BASE_URL_OUTSITE = "https://corona-api.com/";
     private static String BASE_URL_BOYTE = "https://maps.vnpost.vn/apps/covid19/";
 
-    private static String BASE_URL = "http://192.168.137.1:8082/";
+//    private static String BASE_URL = "http://192.168.137.1:8082/";
 
     //May khac
     //Genymotion
     //    private static String BASE_URL = "http://10.0.3.2:8082/";
-    //    private static String BASE_URL = "http://10.0.2.2:8082/";
+        private static String BASE_URL = "http://10.0.2.2:8082/";
     public static Retrofit getClientOutsite() {
         if (retrofitOutsite == null) {
             retrofitOutsite = new Retrofit.Builder()

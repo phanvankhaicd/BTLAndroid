@@ -30,8 +30,8 @@ import static com.example.corona.Util.AppConfig.getToken;
 
 public interface APIServices {
 
-    @POST("api/login")
-    Call<Token> login(@Body User user);
+    @POST("login")
+    Call<com.example.corona.Model.Login.UserInfo> login(@Body User user);
 
     @GET("api/health-monitor")
 //    @Headers("token: string")

@@ -1,5 +1,6 @@
 package com.example.corona.ViewController.Home.FragmentHome;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
@@ -10,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,6 +23,7 @@ import com.example.corona.Model.VN.Data;
 import com.example.corona.Network.DataServices;
 import com.example.corona.R;
 import com.example.corona.Util.LoadingDialog;
+import com.example.corona.ViewController.Home.AnalyticActivity;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.geojson.Feature;
@@ -70,6 +73,7 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
     private static final String ICON_ID = "ICON_ID";
     private static final String ICON_LAYER_ID = "ICON_LAYER_ID";
     LoadingDialog loadingDialog;
+    private Button btnAnalytic;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -140,6 +144,7 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
         return view;
     }
     private void init(View view) {
+        btnAnalytic = view.findViewById(R.id.btn_analytic);
         tvDead = view.findViewById(R.id.tv_dead);
         tvInfected = view.findViewById(R.id.tv_infected);
         tvRecover = view.findViewById(R.id.tv_recover);
@@ -298,6 +303,9 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.btn_analytic:
+                startActivity(new Intent(getContext(), AnalyticActivity.class));
+                break;
             case R.id.ln_vietnam:
                 getDataVN();
                 break;
