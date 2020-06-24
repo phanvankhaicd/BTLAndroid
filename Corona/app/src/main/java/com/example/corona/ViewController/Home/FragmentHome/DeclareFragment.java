@@ -14,7 +14,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.corona.Model.Declare;
+import com.example.corona.Model.HealthMonitor.HealthMonitor;
+import com.example.corona.Model.HealthMonitor.ItemDeclare;
 import com.example.corona.Model.HistoryDeclare;
+import com.example.corona.Model.PostHealthMonitor.SendHealthMonitor;
 import com.example.corona.Network.Body.CreateDeclare;
 import com.example.corona.Network.DataServices;
 import com.example.corona.R;
@@ -40,7 +43,7 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
     }
 
     private ListView lv;
-    ArrayList<Declare> data;
+    ArrayList<ItemDeclare> data;
     HistoryDeclareAdapter adapter;
     CheckBox cbHo, cbSot, cbKhoTho, cbDauNguoi, cbTot;
     Button btnSent;
@@ -84,26 +87,40 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
     private void createDeclare() {
         CreateDeclare body = new CreateDeclare(
                 cbSot.isChecked() ? 1 :0,
-                cbKhoTho.isChecked() ? 1 :0,
                 cbHo.isChecked() ? 1 :0,
+                cbKhoTho.isChecked() ? 1 :0,
                 cbDauNguoi.isChecked() ? 1 :0,
                 cbTot.isChecked() ? 1 :0
                 );
 
         DataServices.getAPIService().createDeclare(body, getToken(getContext()))
-                .enqueue(new Callback<Declare>() {
+                .enqueue(new Callback<SendHealthMonitor>() {
                     @Override
-                    public void onResponse(Call<Declare> call, Response<Declare> response) {
-                        if(response.isSuccessful()){
+                    public void onResponse(Call<SendHealthMonitor> call, Response<SendHealthMonitor> response) {
+                        if(response.body().getErrorCode() == 0){
                             getDeclare();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<Declare> call, Throwable t) {
+                    public void onFailure(Call<SendHealthMonitor> call, Throwable t) {
                         Toast.makeText(getContext(), "Vui long thu lai!", Toast.LENGTH_SHORT).show();
+
                     }
                 });
+//                .enqueue(new Callback<Declare>() {
+//                    @Override
+//                    public void onResponse(Call<Declare> call, Response<Declare> response) {
+//                        if(response.isSuccessful()){
+//                            getDeclare();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<Declare> call, Throwable t) {
+//                        Toast.makeText(getContext(), "Vui long thu lai!", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
     }
 
     @Override
@@ -159,27 +176,48 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
     void getDeclare() {
         loadingDialog.startLoadingDialog();
         DataServices.getAPIService().callHistoryDeclare("0", "10", getToken(getContext()))
-                .enqueue(new Callback<List<Declare>>() {
+                .enqueue(new Callback<HealthMonitor>() {
                     @Override
-                    public void onResponse(Call<List<Declare>> call, Response<List<Declare>> response) {
-                        Toast.makeText(getContext(), "oke", Toast.LENGTH_SHORT).show();
-                        if (response.isSuccessful()) {
+                    public void onResponse(Call<HealthMonitor> call, Response<HealthMonitor> response) {
+//                        Toast.makeText(getContext(), "oke", Toast.LENGTH_SHORT).show();
+                        if (response.body().getErrorCode() == 0) {
                             data.clear();
-                            data.addAll((ArrayList<Declare>) response.body());
+                            data.addAll((ArrayList<ItemDeclare>) response.body().getData().getItemDeclare());
                             adapter.notifyDataSetChanged();
                             loadingDialog.dismissLoadingDialog();
                         }
                         else{
                             loadingDialog.dismissLoadingDialog();
-
+                            Toast.makeText(getContext(), "Vui lòng kiểm tra lại đường truyền!", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<List<Declare>> call, Throwable t) {
-                        loadingDialog.dismissLoadingDialog();
+                    public void onFailure(Call<HealthMonitor> call, Throwable t) {
+
                     }
                 });
+//                .enqueue(new Callback<List<Declare>>() {
+//                    @Override
+//                    public void onResponse(Call<List<Declare>> call, Response<List<Declare>> response) {
+//                        Toast.makeText(getContext(), "oke", Toast.LENGTH_SHORT).show();
+//                        if (response.isSuccessful()) {
+//                            data.clear();
+//                            data.addAll((ArrayList<Declare>) response.body());
+//                            adapter.notifyDataSetChanged();
+//                            loadingDialog.dismissLoadingDialog();
+//                        }
+//                        else{
+//                            loadingDialog.dismissLoadingDialog();
+//
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<List<Declare>> call, Throwable t) {
+//                        loadingDialog.dismissLoadingDialog();
+//                    }
+//                });
     }
 
     private void init(View view) {

@@ -3,6 +3,8 @@ package com.example.corona.Network;
 
 import com.example.corona.Model.Declare;
 import com.example.corona.Model.Global.CoronaGlobal;
+import com.example.corona.Model.HealthMonitor.HealthMonitor;
+import com.example.corona.Model.PostHealthMonitor.SendHealthMonitor;
 import com.example.corona.Model.Reflection;
 import com.example.corona.Model.Token;
 import com.example.corona.Model.User;
@@ -35,14 +37,14 @@ public interface APIServices {
 
     @GET("api/health-monitor")
 //    @Headers("token: string")
-    Call<List<Declare>> callHistoryDeclare(@Query("page") String page, @Query("size") String size, @Header("token") String token );
+    Call<HealthMonitor> callHistoryDeclare(@Query("page") String page, @Query("size") String size, @Header("authorization") String token );
 
-    @POST("api/health-monitor/create")
-    Call<Declare> createDeclare(@Body CreateDeclare create, @Header("token") String token);
+    @POST("api/health-monitor/send")
+    Call<SendHealthMonitor> createDeclare(@Body CreateDeclare create, @Header("authorization") String token);
 
     @POST("api/reflection/info")
-    Call<Reflection> createReflectionInfo(@Body ReflectionInfo info, @Header("token") String token);
+    Call<Reflection> createReflectionInfo(@Body ReflectionInfo info, @Header("authorization") String token);
 
     @GET("api/user")
-    Call<UserInfo> getUserInfo( @Header("token") String token);
+    Call<UserInfo> getUserInfo( @Header("authorization") String token);
 }

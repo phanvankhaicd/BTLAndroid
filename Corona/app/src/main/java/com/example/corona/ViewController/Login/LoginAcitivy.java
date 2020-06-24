@@ -182,7 +182,7 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
                 .enqueue(new Callback<UserInfo>() {
                     @Override
                     public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
-                        if(response.isSuccessful()){
+//                        if(response.isSuccessful()){
                             if(response.body().getErrorCode() == 0)
                             {
                                 setToken(LoginAcitivy.this, response.body().getData().getToken());
@@ -193,11 +193,11 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
                                 Toast.makeText(LoginAcitivy.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                                 loadingDialog.dismissLoadingDialog();
                             }
-                        }
-                        else{
-                            Toast.makeText(LoginAcitivy.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
-                            loadingDialog.dismissLoadingDialog();
-                        }
+//                        }
+//                        else{
+//                            Toast.makeText(LoginAcitivy.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+//                            loadingDialog.dismissLoadingDialog();
+//                        }
                     }
 
                     @Override
