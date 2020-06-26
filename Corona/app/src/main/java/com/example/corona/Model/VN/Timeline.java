@@ -3,7 +3,9 @@ package com.example.corona.Model.VN;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Timeline {
+import java.io.Serializable;
+
+public class Timeline implements Serializable {
 
 @SerializedName("updated_at")
 @Expose

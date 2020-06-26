@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ViewController.Home.AnalyticActivity"></activity>
+        <activity android:name=".ViewController.Login.RegisterActivity"></activity>
+        <activity android:name=".ViewController.Home.AnalyticActivity" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"

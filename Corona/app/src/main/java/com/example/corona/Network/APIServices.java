@@ -6,12 +6,15 @@ import com.example.corona.Model.Global.CoronaGlobal;
 import com.example.corona.Model.HealthMonitor.HealthMonitor;
 import com.example.corona.Model.PostHealthMonitor.SendHealthMonitor;
 import com.example.corona.Model.Reflection;
+import com.example.corona.Model.Register.Register;
 import com.example.corona.Model.Token;
 import com.example.corona.Model.User;
-import com.example.corona.Model.UserInfo;
+import com.example.corona.Model.UserInfoRS.UserInfo;
 import com.example.corona.Model.VN.CoronaVN;
 import com.example.corona.Network.Body.CreateDeclare;
 import com.example.corona.Network.Body.ReflectionInfo;
+import com.example.corona.Network.Body.Register.NewAccount;
+import com.example.corona.Network.Body.SocialAccout;
 
 import java.util.List;
 import java.util.Map;
@@ -35,9 +38,13 @@ public interface APIServices {
     @POST("login")
     Call<com.example.corona.Model.Login.UserInfo> login(@Body User user);
 
+    //    register
+    @POST("register")
+    Call<Register> register(@Body NewAccount user);
+
     @GET("api/health-monitor")
 //    @Headers("token: string")
-    Call<HealthMonitor> callHistoryDeclare(@Query("page") String page, @Query("size") String size, @Header("authorization") String token );
+    Call<HealthMonitor> callHistoryDeclare(@Query("page") String page, @Query("size") String size, @Header("authorization") String token);
 
     @POST("api/health-monitor/send")
     Call<SendHealthMonitor> createDeclare(@Body CreateDeclare create, @Header("authorization") String token);
@@ -45,6 +52,14 @@ public interface APIServices {
     @POST("api/reflection/info")
     Call<Reflection> createReflectionInfo(@Body ReflectionInfo info, @Header("authorization") String token);
 
-    @GET("api/user")
-    Call<UserInfo> getUserInfo( @Header("authorization") String token);
+
+    @GET("api/account/info")
+    Call<UserInfo> getUser(@Header("authorization") String token);
+
+    @POST("api/reflection/info")
+    Call<Reflection> updateUserInfo(@Body ReflectionInfo info, @Header("authorization") String token);
+
+    @POST("loginFacebook")
+    Call<com.example.corona.Model.Login.UserInfo> loginFacebook(@Body SocialAccout accout);
+
 }

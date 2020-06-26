@@ -20,6 +20,7 @@ import com.example.corona.Model.Global.DataG;
 import com.example.corona.Model.MapNcovi.MapNcovi;
 import com.example.corona.Model.VN.CoronaVN;
 import com.example.corona.Model.VN.Data;
+import com.example.corona.Model.VN.Timeline;
 import com.example.corona.Network.DataServices;
 import com.example.corona.R;
 import com.example.corona.Util.LoadingDialog;
@@ -74,6 +75,9 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
     private static final String ICON_LAYER_ID = "ICON_LAYER_ID";
     LoadingDialog loadingDialog;
     private Button btnAnalytic;
+
+    ArrayList<Timeline> timelineVN = new ArrayList<>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -258,6 +262,7 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
                     tvTimeUpdate.setText("Cập nhật: " + time);
                     loadingDialog.dismissLoadingDialog();
 
+                    timelineVN.addAll(data.getTimeline());
                 }
                 else{
                     loadingDialog.dismissLoadingDialog();
@@ -311,7 +316,9 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_analytic:
-                startActivity(new Intent(getContext(), AnalyticActivity.class));
+                Intent intent = new Intent(getContext(), AnalyticActivity.class);
+                intent.putExtra("timeline",timelineVN);
+                startActivity(intent);
                 break;
             case R.id.ln_vietnam:
                 getDataVN();

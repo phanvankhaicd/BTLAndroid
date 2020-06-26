@@ -1,6 +1,6 @@
 package com.example.corona.ViewController.Login;
 
-import android.app.ProgressDialog;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,20 +10,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.corona.Model.Login.UserInfo;
-import com.example.corona.Model.Token;
 import com.example.corona.Model.User;
+import com.example.corona.Network.Body.Register.NewAccount;
 import com.example.corona.Network.DataServices;
 import com.example.corona.R;
 import com.example.corona.Util.LoadingDialog;
 import com.example.corona.ViewController.Home.MainActivity;
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -33,10 +32,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -57,6 +52,7 @@ import static com.example.corona.Util.AppConfig.setToken;
 
 public class LoginAcitivy extends AppCompatActivity implements View.OnClickListener {
 
+    private static final int REGISTER_OK = 2;
     SignInButton signInButton;
     GoogleSignInClient mGoogleSignInClient;
     EditText edtUserName, edtPassword;
@@ -65,6 +61,7 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
     CallbackManager callbackManager;
     LoginButton loginButton;
     int RC_SIGN_IN = 1;
+    TextView tvSignup ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +98,7 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Toast.makeText(LoginAcitivy.this, "oke", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
@@ -146,6 +144,17 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
+        if(requestCode == REGISTER_OK){
+            if(resultCode == Activity.RESULT_OK) {
+                NewAccount account = (NewAccount) data.getSerializableExtra("account");
+
+                edtUserName.setText(account.getUsername());
+                edtPassword.setText(account.getPassword());
+
+
+            } else {
+            }
+        }
     }
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
@@ -160,14 +169,16 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
 //            updateUI(null);
         }
     }
-
     void init() {
         edtUserName = findViewById(R.id.edt_username);
         edtPassword = findViewById(R.id.edt_password);
         btnLogin = findViewById(R.id.btn_login);
-        btnLogin.setOnClickListener(this);
         loadingDialog = new LoadingDialog(LoginAcitivy.this );
         loginButton =  findViewById(R.id.login_button);
+        tvSignup = findViewById(R.id.link_signup);
+
+        btnLogin.setOnClickListener(this);
+        tvSignup.setOnClickListener(this);
     }
 
     void navigateHome(){
@@ -236,6 +247,7 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
     }
 //
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -244,9 +256,15 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
                 loginAction(
                         edtUserName.getText().toString(),
                         edtPassword.getText().toString());
+                break;
+            }
+            case R.id.link_signup:{
+                startActivityForResult(new Intent(LoginAcitivy.this,RegisterActivity.class), REGISTER_OK);
+                break;
             }
             default:
                 break;
         }
     }
+
 }

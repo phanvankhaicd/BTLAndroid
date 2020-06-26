@@ -12,7 +12,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.corona.Model.UserInfo;
+import com.example.corona.Model.UserInfoRS.UserInfo;
 import com.example.corona.Network.DataServices;
 import com.example.corona.R;
 import com.example.corona.Util.LoadingDialog;
@@ -34,6 +34,7 @@ public class UserInfoScreen extends AppCompatActivity implements View.OnClickLis
     Toolbar toolbar;
     RadioButton rdNam, rdNu;
     LoadingDialog loadingDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,40 +69,70 @@ public class UserInfoScreen extends AppCompatActivity implements View.OnClickLis
 
     private void getUserInfo() {
         loadingDialog.startLoadingDialog();
-        DataServices.getAPIService().getUserInfo(getToken(UserInfoScreen.this))
+        DataServices.getAPIService().getUser(getToken(UserInfoScreen.this))
                 .enqueue(new Callback<UserInfo>() {
                     @Override
                     public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
                         if (response.isSuccessful()) {
-                            edtName.setText(response.body().getFullName());
-                            edtAddress.setText(response.body().getAddress());
-                            edtBHXH.setText(response.body().getBhxh());
-                            edtCMND.setText(response.body().getCmt());
-                            edtEmail.setText(response.body().getEmail());
-                            edtPhone.setText(response.body().getPhoneNo());
-                            tvBirthDay.setText(response.body().getBirthday());
-                            if(response.body().getGender().equals("FEMALE"))
+                            edtName.setText(response.body().getData().getUserFullname());
+                            edtAddress.setText(response.body().getData().getUserAddress());
+                            edtBHXH.setText(response.body().getData().getUserBhxh());
+                            edtCMND.setText(response.body().getData().getUserCmt());
+                            edtEmail.setText(response.body().getData().getUserEmail());
+                            edtPhone.setText(response.body().getData().getUserPhoneNo());
+                            tvBirthDay.setText(response.body().getData().getUserBirthday());
+                            if (response.body().getData().getUserGender() == null ||
+                                    response.body().getData().getUserGender() == 0)
                                 rdNu.setChecked(true);
                             else
                                 rdNam.setChecked(true);
                             loadingDialog.dismissLoadingDialog();
-
-                        }
-                        else{
-                            Toast.makeText(UserInfoScreen.this, "Cập nhật không thành công", Toast.LENGTH_SHORT).show();
-                            loadingDialog.dismissLoadingDialog();
-
                         }
                     }
 
                     @Override
                     public void onFailure(Call<UserInfo> call, Throwable t) {
-                        Toast.makeText(UserInfoScreen.this, "Vui lòng kiểm tra lại đường truyền", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserInfoScreen.this, "Cập nhật không thành công", Toast.LENGTH_SHORT).show();
                         loadingDialog.dismissLoadingDialog();
-
                     }
                 });
     }
+//    private void getUserInfo() {
+//        loadingDialog.startLoadingDialog();
+//        DataServices.getAPIService().getUserInfo(getToken(UserInfoScreen.this))
+//                .enqueue(new Callback<UserInfo>() {
+//                    @Override
+//                    public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+//                        if (response.isSuccessful()) {
+//                            edtName.setText(response.body().getFullName());
+//                            edtAddress.setText(response.body().getAddress());
+//                            edtBHXH.setText(response.body().getBhxh());
+//                            edtCMND.setText(response.body().getCmt());
+//                            edtEmail.setText(response.body().getEmail());
+//                            edtPhone.setText(response.body().getPhoneNo());
+//                            tvBirthDay.setText(response.body().getBirthday());
+//                            if(response.body().getGender().equals("FEMALE"))
+//                                rdNu.setChecked(true);
+//                            else
+//                                rdNam.setChecked(true);
+//                            loadingDialog.dismissLoadingDialog();
+//
+//                        }
+//                        else{
+//                            Toast.makeText(UserInfoScreen.this, "Cập nhật không thành công", Toast.LENGTH_SHORT).show();
+//                            loadingDialog.dismissLoadingDialog();
+//
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<UserInfo> call, Throwable t) {
+//                        Toast.makeText(UserInfoScreen.this, "Vui lòng kiểm tra lại đường truyền", Toast.LENGTH_SHORT).show();
+//                        loadingDialog.dismissLoadingDialog();
+//
+//                    }
+//                });
+//    }
 
     public boolean onSupportNavigateUp() {
         onBackPressed();
