@@ -11,9 +11,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.corona.R;
-import com.example.corona.ViewController.Home.MainActivity;
 import com.example.corona.ViewController.Login.LoginAcitivy;
-import com.example.corona.ViewController.UserInfo.UserInfoScreen;
+import com.example.corona.ViewController.UserInfo.UserInfoActivity;
 
 
 /**
@@ -45,7 +44,7 @@ public class UserFragment extends Fragment {
         lnUserinfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), UserInfoScreen.class));
+                startActivity(new Intent(getContext(), UserInfoActivity.class));
             }
         });
         return view;

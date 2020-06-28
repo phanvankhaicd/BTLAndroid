@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
@@ -14,8 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.corona.Model.Login.UserInfo;
+import com.example.corona.Model.TokenFirebase.DeviceTokenFireBase;
 import com.example.corona.Model.User;
+import com.example.corona.Network.Body.DeviceToken;
 import com.example.corona.Network.Body.Register.NewAccount;
+import com.example.corona.Network.Body.SocialAccount;
 import com.example.corona.Network.DataServices;
 import com.example.corona.R;
 import com.example.corona.Util.LoadingDialog;
@@ -31,13 +35,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.example.corona.Util.AppConfig.getToken;
+import static com.example.corona.Util.AppConfig.handleTokenFirebase;
 import static com.example.corona.Util.AppConfig.setToken;
 
 //import com.orhanobut.logger.Logger;
@@ -61,7 +69,9 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
     CallbackManager callbackManager;
     LoginButton loginButton;
     int RC_SIGN_IN = 1;
-    TextView tvSignup ;
+    TextView tvSignup;
+    String tokenFireBase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,20 +80,33 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
         callbackManager = CallbackManager.Factory.create();
         loginButton.setReadPermissions("email");
         String token = getToken(this);
-        if(token!=""){
+        if (token != "") {
             navigateHome();
         }
         loginGoogle();
         loginFacebook();
+
+
     }
+
 
     private void loginGoogle() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("690417525971-22iokmecsej2msrjt8r0063pvsb0ivmu.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
+//        GoogleSignIn.silentSignIn()
+//                .addOnCompleteListener(
+//                        this,
+//                        new OnCompleteListener<GoogleSignInAccount>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
+//                                handleSignInResult(task);
+//                            }
+//                        });
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +121,7 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Toast.makeText(LoginAcitivy.this, "oke", Toast.LENGTH_SHORT).show();
+                loginWithFacebook(loginResult.getAccessToken().getToken());
 
             }
 
@@ -134,6 +158,47 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
 //        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
     }
 
+    private void loginWithFacebook(String token) {
+        loadingDialog.startLoadingDialog();
+        SocialAccount account = new SocialAccount(token);
+        DataServices.getAPIService().loginFacebook(account).enqueue(new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                if (response.body().getErrorCode() == 0) {
+                    setToken(LoginAcitivy.this, response.body().getData().getToken());
+                    Toast.makeText(LoginAcitivy.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    addDeviceID();
+                    loadingDialog.dismissLoadingDialog();
+                    navigateHome();
+                } else {
+                    Toast.makeText(LoginAcitivy.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    loadingDialog.dismissLoadingDialog();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+                Toast.makeText(LoginAcitivy.this, " k oke", Toast.LENGTH_SHORT).show();
+                loadingDialog.dismissLoadingDialog();
+            }
+        });
+    }
+
+    private void addDeviceID() {
+        DataServices.getAPIService().updateFirebaseToken(new DeviceToken(handleTokenFirebase()))
+                .enqueue(new Callback<DeviceTokenFireBase>() {
+                    @Override
+                    public void onResponse(Call<DeviceTokenFireBase> call, Response<DeviceTokenFireBase> response) {
+                        Toast.makeText(LoginAcitivy.this, "Them device ID thanh cong", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<DeviceTokenFireBase> call, Throwable t) {
+                        Toast.makeText(LoginAcitivy.this, "Dang nhap that bai", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -144,8 +209,8 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
-        if(requestCode == REGISTER_OK){
-            if(resultCode == Activity.RESULT_OK) {
+        if (requestCode == REGISTER_OK) {
+            if (resultCode == Activity.RESULT_OK) {
                 NewAccount account = (NewAccount) data.getSerializableExtra("account");
 
                 edtUserName.setText(account.getUsername());
@@ -156,12 +221,16 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
+
+
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            Log.d("Oke", "signInResult:failed code=");
+            String token = account.getIdToken();
+            Log.d("Oke", "signInResult:failed code=" + token);
             // Signed in successfully, show authenticated UI.
 //            updateUI(account);
+            loginWithGoogle(token);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
@@ -169,41 +238,70 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
 //            updateUI(null);
         }
     }
+
+    private void loginWithGoogle(String token) {
+        loadingDialog.startLoadingDialog();
+        SocialAccount account = new SocialAccount(token);
+        DataServices.getAPIService().loginGoogle(account)
+                .enqueue(new Callback<UserInfo>() {
+                    @Override
+                    public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                        if (response.body().getErrorCode() == 0) {
+                            setToken(LoginAcitivy.this, response.body().getData().getToken());
+                            Toast.makeText(LoginAcitivy.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                            addDeviceID();
+                            loadingDialog.dismissLoadingDialog();
+                            navigateHome();
+                        } else {
+                            Toast.makeText(LoginAcitivy.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                            loadingDialog.dismissLoadingDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserInfo> call, Throwable t) {
+                        Toast.makeText(LoginAcitivy.this, " k oke", Toast.LENGTH_SHORT).show();
+                        loadingDialog.dismissLoadingDialog();
+                    }
+                });
+    }
+
     void init() {
         edtUserName = findViewById(R.id.edt_username);
         edtPassword = findViewById(R.id.edt_password);
         btnLogin = findViewById(R.id.btn_login);
-        loadingDialog = new LoadingDialog(LoginAcitivy.this );
-        loginButton =  findViewById(R.id.login_button);
+        loadingDialog = new LoadingDialog(LoginAcitivy.this);
+        loginButton = findViewById(R.id.login_button);
         tvSignup = findViewById(R.id.link_signup);
 
         btnLogin.setOnClickListener(this);
         tvSignup.setOnClickListener(this);
     }
 
-    void navigateHome(){
+    void navigateHome() {
         Intent intent = new Intent(LoginAcitivy.this, MainActivity.class);
         startActivity(intent);
         finish();
     }
+
     void loginAction(String username, String password) {
 
-        User user =new User(username,password);
+        User user = new User(username, password);
         DataServices.getAPIService().login(user)
                 .enqueue(new Callback<UserInfo>() {
                     @Override
                     public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
 //                        if(response.isSuccessful()){
-                            if(response.body().getErrorCode() == 0)
-                            {
-                                setToken(LoginAcitivy.this, response.body().getData().getToken());
-                                Toast.makeText(LoginAcitivy.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                                loadingDialog.dismissLoadingDialog();
-                                navigateHome();}
-                            else {
-                                Toast.makeText(LoginAcitivy.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                                loadingDialog.dismissLoadingDialog();
-                            }
+                        if (response.body().getErrorCode() == 0) {
+                            setToken(LoginAcitivy.this, response.body().getData().getToken());
+                            Toast.makeText(LoginAcitivy.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                            addDeviceID();
+                            loadingDialog.dismissLoadingDialog();
+                            navigateHome();
+                        } else {
+                            Toast.makeText(LoginAcitivy.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                            loadingDialog.dismissLoadingDialog();
+                        }
 //                        }
 //                        else{
 //                            Toast.makeText(LoginAcitivy.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
@@ -258,8 +356,8 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
                         edtPassword.getText().toString());
                 break;
             }
-            case R.id.link_signup:{
-                startActivityForResult(new Intent(LoginAcitivy.this,RegisterActivity.class), REGISTER_OK);
+            case R.id.link_signup: {
+                startActivityForResult(new Intent(LoginAcitivy.this, RegisterActivity.class), REGISTER_OK);
                 break;
             }
             default:

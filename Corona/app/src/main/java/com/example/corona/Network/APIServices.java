@@ -1,36 +1,27 @@
 package com.example.corona.Network;
 
 
-import com.example.corona.Model.Declare;
-import com.example.corona.Model.Global.CoronaGlobal;
 import com.example.corona.Model.HealthMonitor.HealthMonitor;
 import com.example.corona.Model.PostHealthMonitor.SendHealthMonitor;
 import com.example.corona.Model.Reflection;
 import com.example.corona.Model.Register.Register;
-import com.example.corona.Model.Token;
+import com.example.corona.Model.TokenFirebase.DeviceTokenFireBase;
+import com.example.corona.Model.Update.UpdateAccountRS;
 import com.example.corona.Model.User;
 import com.example.corona.Model.UserInfoRS.UserInfo;
-import com.example.corona.Model.VN.CoronaVN;
 import com.example.corona.Network.Body.CreateDeclare;
+import com.example.corona.Network.Body.DeviceToken;
 import com.example.corona.Network.Body.ReflectionInfo;
 import com.example.corona.Network.Body.Register.NewAccount;
-import com.example.corona.Network.Body.SocialAccout;
-
-import java.util.List;
-import java.util.Map;
+import com.example.corona.Network.Body.SocialAccount;
+import com.example.corona.Network.Body.UpdateAccount;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FieldMap;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
-
-import static com.example.corona.Util.AppConfig.getToken;
 
 
 public interface APIServices {
@@ -38,9 +29,22 @@ public interface APIServices {
     @POST("login")
     Call<com.example.corona.Model.Login.UserInfo> login(@Body User user);
 
+    @POST("loginFacebook")
+    Call<com.example.corona.Model.Login.UserInfo> loginFacebook(@Body SocialAccount accout);
+
+    @POST("loginGoogle")
+    Call<com.example.corona.Model.Login.UserInfo> loginGoogle(@Body SocialAccount accout);
+
+    //updateTokenDevice
+    @POST("updateTokenDevice")
+    Call<DeviceTokenFireBase> updateFirebaseToken(@Body DeviceToken token);
+
     //    register
     @POST("register")
     Call<Register> register(@Body NewAccount user);
+
+    @POST("api/account/update")
+    Call<UpdateAccountRS> updateAccount(@Body UpdateAccount user, @Header("authorization") String token);
 
     @GET("api/health-monitor")
 //    @Headers("token: string")
@@ -59,7 +63,5 @@ public interface APIServices {
     @POST("api/reflection/info")
     Call<Reflection> updateUserInfo(@Body ReflectionInfo info, @Header("authorization") String token);
 
-    @POST("loginFacebook")
-    Call<com.example.corona.Model.Login.UserInfo> loginFacebook(@Body SocialAccout accout);
 
 }

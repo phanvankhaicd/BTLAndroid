@@ -1,9 +1,9 @@
 package com.example.corona.Network.Body;
 
-public class SocialAccout {
+public class SocialAccount {
     String token;
 
-    public SocialAccout(String token) {
+    public SocialAccount(String token) {
         this.token = token;
     }
 

@@ -38,7 +38,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".ViewController.UserInfo.UserInfoScreen" />
+        <activity android:name=".ViewController.UserInfo.UserInfoActivity" />
         <activity android:name=".ViewController.Home.MainActivity" /> <!-- <activity android:name=".ViewController.Product.ListProductActivity"></activity> -->
         <activity android:name=".ViewController.Login.LoginAcitivy">
             <intent-filter>

@@ -6,13 +6,16 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.corona.Model.Update.UpdateAccountRS;
 import com.example.corona.Model.UserInfoRS.UserInfo;
+import com.example.corona.Network.Body.UpdateAccount;
 import com.example.corona.Network.DataServices;
 import com.example.corona.R;
 import com.example.corona.Util.LoadingDialog;
@@ -25,7 +28,7 @@ import retrofit2.Response;
 
 import static com.example.corona.Util.AppConfig.getToken;
 
-public class UserInfoScreen extends AppCompatActivity implements View.OnClickListener {
+public class UserInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
     EditText edtName, edtCMND, edtPhone, edtEmail, edtBHXH, edtAddress;
     TextView tvBirthDay;
@@ -34,6 +37,7 @@ public class UserInfoScreen extends AppCompatActivity implements View.OnClickLis
     Toolbar toolbar;
     RadioButton rdNam, rdNu;
     LoadingDialog loadingDialog;
+    Button btnUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +54,13 @@ public class UserInfoScreen extends AppCompatActivity implements View.OnClickLis
     }
 
     private void handleOnClick() {
+
         tvBirthDay.setOnClickListener(this);
+        btnUpdate.setOnClickListener(this);
     }
 
     private void init() {
-        loadingDialog = new LoadingDialog(UserInfoScreen.this);
+        loadingDialog = new LoadingDialog(UserInfoActivity.this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         edtName = findViewById(R.id.edt_name);
         edtAddress = findViewById(R.id.edt_address);
@@ -65,11 +71,12 @@ public class UserInfoScreen extends AppCompatActivity implements View.OnClickLis
         tvBirthDay = findViewById(R.id.tv_birthday);
         rdNam = findViewById(R.id.rd_nam);
         rdNu = findViewById(R.id.rd_nu);
+        btnUpdate = findViewById(R.id.btn_sent);
     }
 
     private void getUserInfo() {
         loadingDialog.startLoadingDialog();
-        DataServices.getAPIService().getUser(getToken(UserInfoScreen.this))
+        DataServices.getAPIService().getUser(getToken(UserInfoActivity.this))
                 .enqueue(new Callback<UserInfo>() {
                     @Override
                     public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
@@ -92,47 +99,39 @@ public class UserInfoScreen extends AppCompatActivity implements View.OnClickLis
 
                     @Override
                     public void onFailure(Call<UserInfo> call, Throwable t) {
-                        Toast.makeText(UserInfoScreen.this, "Cập nhật không thành công", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserInfoActivity.this, "Cập nhật không thành công", Toast.LENGTH_SHORT).show();
                         loadingDialog.dismissLoadingDialog();
                     }
                 });
     }
-//    private void getUserInfo() {
-//        loadingDialog.startLoadingDialog();
-//        DataServices.getAPIService().getUserInfo(getToken(UserInfoScreen.this))
-//                .enqueue(new Callback<UserInfo>() {
-//                    @Override
-//                    public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
-//                        if (response.isSuccessful()) {
-//                            edtName.setText(response.body().getFullName());
-//                            edtAddress.setText(response.body().getAddress());
-//                            edtBHXH.setText(response.body().getBhxh());
-//                            edtCMND.setText(response.body().getCmt());
-//                            edtEmail.setText(response.body().getEmail());
-//                            edtPhone.setText(response.body().getPhoneNo());
-//                            tvBirthDay.setText(response.body().getBirthday());
-//                            if(response.body().getGender().equals("FEMALE"))
-//                                rdNu.setChecked(true);
-//                            else
-//                                rdNam.setChecked(true);
-//                            loadingDialog.dismissLoadingDialog();
-//
-//                        }
-//                        else{
-//                            Toast.makeText(UserInfoScreen.this, "Cập nhật không thành công", Toast.LENGTH_SHORT).show();
-//                            loadingDialog.dismissLoadingDialog();
-//
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<UserInfo> call, Throwable t) {
-//                        Toast.makeText(UserInfoScreen.this, "Vui lòng kiểm tra lại đường truyền", Toast.LENGTH_SHORT).show();
-//                        loadingDialog.dismissLoadingDialog();
-//
-//                    }
-//                });
-//    }
+
+    private void updateUser() {
+        UpdateAccount account = new UpdateAccount(
+                edtName.getText().toString(),
+                edtEmail.getText().toString(),
+                tvBirthDay.getText().toString(),
+                edtAddress.getText().toString(),
+                edtPhone.getText().toString(),
+                edtCMND.getText().toString(),
+                edtBHXH.getText().toString(),
+                rdNam.isChecked() ? "1" : "0"
+        );
+        loadingDialog.startLoadingDialog();
+        DataServices.getAPIService().updateAccount(account, getToken(this))
+                .enqueue(new Callback<UpdateAccountRS>() {
+                    @Override
+                    public void onResponse(Call<UpdateAccountRS> call, Response<UpdateAccountRS> response) {
+                        Toast.makeText(UserInfoActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        loadingDialog.dismissLoadingDialog();
+                    }
+
+                    @Override
+                    public void onFailure(Call<UpdateAccountRS> call, Throwable t) {
+                        Toast.makeText(UserInfoActivity.this, "Cập nhật không thành công", Toast.LENGTH_SHORT).show();
+                        loadingDialog.dismissLoadingDialog();
+                    }
+                });
+    }
 
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -144,6 +143,9 @@ public class UserInfoScreen extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.tv_birthday:
                 showDatePickerDialog();
+                break;
+            case R.id.btn_sent:
+                updateUser();
                 break;
         }
     }
@@ -158,7 +160,7 @@ public class UserInfoScreen extends AppCompatActivity implements View.OnClickLis
 
     public void showDatePickerDialog() {
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(UserInfoScreen.this,
+        DatePickerDialog datePickerDialog = new DatePickerDialog(UserInfoActivity.this,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year,
