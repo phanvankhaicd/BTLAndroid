@@ -7,15 +7,15 @@ public class ReflectionInfo {
 //              "description": "ahihi Do ngok",
 //              "time": "121312313",
 //              "addres": "ádasdas"
-    int questionInfo1, questionInfo2, questionInfo3;
-    String description, time, address;
+    int reflectionInfoQuestion1, reflectionInfoQuestion2, reflectionInfoQuestion3;
+    String reflectionInfoDescription, reflectionInfoTime, reflectionInfoAddress;
 
     public ReflectionInfo(int questionInfo1, int questionInfo2, int questionInfo3, String description, String time, String address) {
-        this.questionInfo1 = questionInfo1;
-        this.questionInfo2 = questionInfo2;
-        this.questionInfo3 = questionInfo3;
-        this.description = description;
-        this.time = time;
-        this.address = address;
+        this.reflectionInfoQuestion1 = questionInfo1;
+        this.reflectionInfoQuestion2 = questionInfo2;
+        this.reflectionInfoQuestion3 = questionInfo3;
+        this.reflectionInfoDescription = description;
+        this.reflectionInfoTime = time;
+        this.reflectionInfoAddress = address;
     }
 }

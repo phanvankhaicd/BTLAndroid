@@ -37,6 +37,7 @@ import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.location.modes.RenderMode;
+import com.mapbox.mapboxsdk.maps.MapFragment;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.MapboxMapOptions;
@@ -75,6 +76,7 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
     private static final String ICON_LAYER_ID = "ICON_LAYER_ID";
     LoadingDialog loadingDialog;
     private Button btnAnalytic;
+    SupportMapFragment mapFragment;
 
     ArrayList<Timeline> timelineVN = new ArrayList<>();
 
@@ -84,11 +86,8 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         init(view);
-        initIconCoordinates();
         handleClick();
-
         Mapbox.getInstance(getContext(), "pk.eyJ1IjoicGhhbnZhbmtoYWljZCIsImEiOiJjazlrNHp4ZzAwMWtjM2VsYm5qdnZvZ3gxIn0.3-bzqDyNVJ9vxYgSodPeHA");
-        SupportMapFragment mapFragment;
         if (savedInstanceState == null) {
 
 // Create fragment
@@ -111,6 +110,14 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
             mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentByTag("com.mapbox.map");
         }
 
+        initIconCoordinates();
+
+
+        getDataVN();
+        return view;
+    }
+
+    private void handleMap() {
         if (mapFragment != null) {
             mapFragment.getMapAsync(new OnMapReadyCallback() {
                 @Override
@@ -144,8 +151,6 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
                 }
             });
         }
-        getDataVN();
-        return view;
     }
 
     private void handleClick() {
@@ -192,7 +197,7 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
                         if (response.isSuccessful()) {
                             for (com.example.corona.Model.MapNcovi.Data i : response.body().getData()) {
                                 symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(i.getLng(), i.getLat())));
-
+                                handleMap();
                             }
                         }
                         else{
@@ -277,6 +282,7 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
     }
 
     void getDataGlobal() {
+        loadingDialog.startLoadingDialog();
 
         DataServices.getAPIServiceOutsite().getCoronaGlobal().enqueue(new Callback<CoronaGlobal>() {
             @Override
@@ -292,15 +298,18 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
                     tvLiveRecover.setText("+ " + numberWithComas(data.get(0).getNewRecovered().toString()));
                     tvLiveInfected.setText("+ " + numberWithComas(data.get(0).getNewConfirmed().toString()));
                     tvTimeUpdate.setText("Cập nhật: " + time);
+                    loadingDialog.dismissLoadingDialog();
+
                 }
                 else{
+                    loadingDialog.dismissLoadingDialog();
 
                 }
             }
 
             @Override
             public void onFailure(Call<CoronaGlobal> call, Throwable t) {
-
+                loadingDialog.dismissLoadingDialog();
             }
         });
     }

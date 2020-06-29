@@ -21,7 +21,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.corona.Model.Reflection;
+import com.example.corona.Model.ReflectionRS.Reflection;
 import com.example.corona.Network.Body.ReflectionInfo;
 import com.example.corona.Network.DataServices;
 import com.example.corona.R;

@@ -3,7 +3,7 @@ package com.example.corona.Network;
 
 import com.example.corona.Model.HealthMonitor.HealthMonitor;
 import com.example.corona.Model.PostHealthMonitor.SendHealthMonitor;
-import com.example.corona.Model.Reflection;
+import com.example.corona.Model.ReflectionRS.Reflection;
 import com.example.corona.Model.Register.Register;
 import com.example.corona.Model.TokenFirebase.DeviceTokenFireBase;
 import com.example.corona.Model.Update.UpdateAccountRS;
