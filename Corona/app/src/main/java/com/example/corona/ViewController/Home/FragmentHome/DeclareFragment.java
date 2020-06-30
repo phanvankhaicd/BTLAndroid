@@ -73,6 +73,13 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
         });
     }
 
+    void uncheck(){
+        cbSot.setChecked(false);
+        cbDauNguoi.setChecked(false);
+        cbKhoTho.setChecked(false);
+        cbHo.setChecked(false);
+        cbTot.setChecked(false);
+    }
     private void checkSubmit() {
         if ((!cbDauNguoi.isChecked())
                 && (!cbSot.isChecked())
@@ -99,6 +106,7 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
                     public void onResponse(Call<SendHealthMonitor> call, Response<SendHealthMonitor> response) {
                         if(response.body().getErrorCode() == 0){
                             getDeclare();
+                            uncheck();
                         }
                     }
 

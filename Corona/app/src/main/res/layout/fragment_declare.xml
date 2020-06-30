@@ -4,18 +4,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ViewController.Home.FragmentHome.DeclareFragment">
+    tools:context=".ViewController.Home.FragmentHome.DeclareFragment"
+    android:background="@color/colorWhite">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginHorizontal="20dp"-->
+<!--        android:text="Theo dõi sức khoẻ"-->
+<!--        android:textColor="@color/colorBlack"-->
+<!--        android:textSize="24sp"-->
+<!--        android:textStyle="bold" />-->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:text="Theo dõi sức khoẻ"
-        android:textColor="@color/colorBlack"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:layout_height="50dp"
+        android:background="@color/colorWhite"
+        >
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Theo dõi sức khoẻ"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorBlack"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+    </androidx.appcompat.widget.Toolbar>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

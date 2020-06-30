@@ -25,6 +25,7 @@ import com.example.corona.Model.ReflectionRS.Reflection;
 import com.example.corona.Network.Body.ReflectionInfo;
 import com.example.corona.Network.DataServices;
 import com.example.corona.R;
+import com.example.corona.Util.LoadingDialog;
 
 import java.util.Calendar;
 
@@ -51,7 +52,7 @@ public class QandAFrangment extends Fragment implements CompoundButton.OnChecked
     String dateTime;
     TextView tvDateTime;
     int mYear, mMonth, mDay, mHour, mMinute, mSecond;
-
+    LoadingDialog loadingDialog;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,6 +63,15 @@ public class QandAFrangment extends Fragment implements CompoundButton.OnChecked
         handleDateTime();
 //        showDatePickerDialog(view);
         return view;
+    }
+
+    void uncheck() {
+        cbDieuKhoan.setChecked(false);
+        cbqt1.setChecked(false);
+        cbqt2.setChecked(false);
+        cbqt3.setChecked(false);
+        edtDes.setText("");
+        edtAddress.setText("");
     }
 
     private void onbtnClick() {
@@ -83,6 +93,7 @@ public class QandAFrangment extends Fragment implements CompoundButton.OnChecked
         edtAddress = view.findViewById(R.id.edt_address);
         lnDate = view.findViewById(R.id.ln_date);
         tvDateTime = view.findViewById(R.id.tv_date);
+        loadingDialog = new LoadingDialog(getActivity());
     }
 
     void handleDateTime() {
@@ -96,7 +107,7 @@ public class QandAFrangment extends Fragment implements CompoundButton.OnChecked
                 + "-" + ((mMonth + 1) < 10 ? "0" + (mMonth + 1) : (mMonth + 1)) + "-" +
                 (mDay < 10 ? "0" + mDay : mDay)
                 + "T" + (mHour < 10 ? "0" + mHour : mHour)
-                + ":" + (mMinute < 10 ? "0" + mMinute : mMinute)+ ":00";
+                + ":" + (mMinute < 10 ? "0" + mMinute : mMinute) + ":00";
         tvDateTime.setText(dateTime);
     }
 
@@ -116,9 +127,9 @@ public class QandAFrangment extends Fragment implements CompoundButton.OnChecked
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-                        dateTime =year
+                        dateTime = year
                                 + "-" + ((monthOfYear + 1) < 10 ? "0" + (monthOfYear + 1) : (monthOfYear + 1))
-                                + "-" +  (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth) + "T" + dateTime;
+                                + "-" + (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth) + "T" + dateTime;
                         tvDateTime.setText(dateTime);
                     }
                 }, mYear, mMonth, mDay);
@@ -136,7 +147,7 @@ public class QandAFrangment extends Fragment implements CompoundButton.OnChecked
                     public void onTimeSet(TimePicker view, int hourOfDay,
                                           int minute) {
                         dateTime = (hourOfDay < 10 ? "0" + hourOfDay : hourOfDay)
-                                + ":" + (minute < 10 ? "0" + minute : minute)+ ":00";
+                                + ":" + (minute < 10 ? "0" + minute : minute) + ":00";
                         showDatePickerDialog();
                     }
                 }, mHour, mMinute, false);
@@ -153,19 +164,24 @@ public class QandAFrangment extends Fragment implements CompoundButton.OnChecked
                 edtAddress.getText().toString()
         );
 
+        loadingDialog.startLoadingDialog();
         DataServices.getAPIService().createReflectionInfo(info, getToken(getContext()))
                 .enqueue(new Callback<Reflection>() {
                     @Override
                     public void onResponse(Call<Reflection> call, Response<Reflection> response) {
-                        if (response.isSuccessful())
+                        if (response.isSuccessful()) {
                             Toast.makeText(getContext(), "Gửi thông tin thành công", Toast.LENGTH_SHORT).show();
-                        else
+                            uncheck();
+                        } else
                             Toast.makeText(getContext(), "Gửi thông tin thất bại", Toast.LENGTH_SHORT).show();
+                        loadingDialog.dismissLoadingDialog();
+
                     }
 
                     @Override
                     public void onFailure(Call<Reflection> call, Throwable t) {
                         Toast.makeText(getContext(), "Vui lòng kiểm tra lại đường truyền", Toast.LENGTH_SHORT).show();
+                        loadingDialog.dismissLoadingDialog();
 
                     }
                 });
