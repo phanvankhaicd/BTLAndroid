@@ -1,6 +1,8 @@
 package com.example.corona.ViewController.Home.FragmentHome;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -43,10 +45,7 @@ public class UserFragment extends Fragment implements View.OnClickListener {
         lnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences preferences = getContext().getSharedPreferences("THE_SMILE", Context.MODE_PRIVATE);
-                preferences.edit().clear().commit();
-                startActivity(new Intent(getContext(), LoginAcitivy.class));
-                getActivity().finish();
+                DialogConfirmLogout();
             }
         });
         lnUserinfo.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +56,31 @@ public class UserFragment extends Fragment implements View.OnClickListener {
         });
         return view;
     }
-
+    void logout(){
+        SharedPreferences preferences = getContext().getSharedPreferences("THE_SMILE", Context.MODE_PRIVATE);
+        preferences.edit().clear().commit();
+        startActivity(new Intent(getContext(), LoginAcitivy.class));
+        getActivity().finish();
+    }
+    void DialogConfirmLogout(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Thông báo");
+        builder.setMessage("Xác nhận đăng xuất");
+        builder.setCancelable(true);
+        builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                logout();
+            }
+        });
+        builder.setNegativeButton("Huỷ bỏ", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
     private void handleClick() {
         lnGmail.setOnClickListener(this);
         lnFacebook.setOnClickListener(this);

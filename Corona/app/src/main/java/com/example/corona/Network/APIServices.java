@@ -37,7 +37,7 @@ public interface APIServices {
 
     //updateTokenDevice
     @POST("updateTokenDevice")
-    Call<DeviceTokenFireBase> updateFirebaseToken(@Body DeviceToken token);
+    Call<DeviceTokenFireBase> updateFirebaseToken(@Body DeviceToken deviceToken, @Header("authorization") String token);
 
     //    register
     @POST("register")

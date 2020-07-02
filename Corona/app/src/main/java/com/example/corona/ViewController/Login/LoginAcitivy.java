@@ -167,9 +167,8 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
                 if (response.body().getErrorCode() == 0) {
                     setToken(LoginAcitivy.this, response.body().getData().getToken());
                     Toast.makeText(LoginAcitivy.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    addDeviceID();
                     loadingDialog.dismissLoadingDialog();
-                    navigateHome();
+                    handleTokenFirebase();
                 } else {
                     Toast.makeText(LoginAcitivy.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     loadingDialog.dismissLoadingDialog();
@@ -184,21 +183,42 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void addDeviceID() {
-        DataServices.getAPIService().updateFirebaseToken(new DeviceToken(handleTokenFirebase()))
+    private void addDeviceID(String deviceID) {
+        loadingDialog.startLoadingDialog();
+
+        DataServices.getAPIService().updateFirebaseToken(new DeviceToken(deviceID),getToken(this))
                 .enqueue(new Callback<DeviceTokenFireBase>() {
                     @Override
                     public void onResponse(Call<DeviceTokenFireBase> call, Response<DeviceTokenFireBase> response) {
-                        Toast.makeText(LoginAcitivy.this, "Them device ID thanh cong", Toast.LENGTH_SHORT).show();
+                        loadingDialog.dismissLoadingDialog();
+                        navigateHome();
+
                     }
 
                     @Override
                     public void onFailure(Call<DeviceTokenFireBase> call, Throwable t) {
                         Toast.makeText(LoginAcitivy.this, "Dang nhap that bai", Toast.LENGTH_SHORT).show();
+                        loadingDialog.dismissLoadingDialog();
+
                     }
                 });
     }
+    public  void handleTokenFirebase() {
 
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("AA", "getInstanceId failed", task.getException());
+                            return;
+                        }
+                        tokenFireBase = task.getResult().getToken();
+                        addDeviceID(tokenFireBase);
+
+                    }
+                });
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -249,9 +269,9 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
                         if (response.body().getErrorCode() == 0) {
                             setToken(LoginAcitivy.this, response.body().getData().getToken());
                             Toast.makeText(LoginAcitivy.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                            addDeviceID();
                             loadingDialog.dismissLoadingDialog();
-                            navigateHome();
+                            handleTokenFirebase();
+
                         } else {
                             Toast.makeText(LoginAcitivy.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                             loadingDialog.dismissLoadingDialog();
@@ -295,9 +315,8 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
                         if (response.body().getErrorCode() == 0) {
                             setToken(LoginAcitivy.this, response.body().getData().getToken());
                             Toast.makeText(LoginAcitivy.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                            addDeviceID();
                             loadingDialog.dismissLoadingDialog();
-                            navigateHome();
+                            handleTokenFirebase();
                         } else {
                             Toast.makeText(LoginAcitivy.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                             loadingDialog.dismissLoadingDialog();
