@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.corona.R;
+import com.example.corona.Util.AppConfig;
+import com.example.corona.ViewController.Home.ChangePassActivity;
 import com.example.corona.ViewController.Login.LoginAcitivy;
 import com.example.corona.ViewController.UserInfo.UserInfoActivity;
 
@@ -33,7 +35,7 @@ public class UserFragment extends Fragment implements View.OnClickListener {
         // Required empty public constructor
     }
 
-    LinearLayout lnLogout, lnUserinfo, lnFacebook, lnGmail;
+    LinearLayout lnLogout, lnUserinfo, lnFacebook, lnGmail, lnChangePass;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,6 +86,8 @@ public class UserFragment extends Fragment implements View.OnClickListener {
     private void handleClick() {
         lnGmail.setOnClickListener(this);
         lnFacebook.setOnClickListener(this);
+        lnChangePass.setOnClickListener(this);
+
     }
 
     private void init(View view) {
@@ -91,13 +95,17 @@ public class UserFragment extends Fragment implements View.OnClickListener {
         lnUserinfo = view.findViewById(R.id.ln_userinfo);
         lnFacebook = view.findViewById(R.id.ln_fb);
         lnGmail = view.findViewById(R.id.ln_gmail);
+        lnChangePass = view.findViewById(R.id.ln_change_pass);
+        if(!AppConfig.getLoginWithSocial(getContext()).equals(""))
+            lnChangePass.setVisibility(View.GONE);
     }
 
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
             case R.id.ln_fb:
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/quantriungdungNcovi/"));
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/quantriungdungNcovi/"));
                 startActivity(intent);
                 break;
             case R.id.ln_gmail:
@@ -118,6 +126,10 @@ public class UserFragment extends Fragment implements View.OnClickListener {
                 emailIntent.setData(Uri.parse("mailto:pvkhaicd@gmail.com"));
                 emailIntent.setClassName("com.google.android.gm", className);
                 startActivity(emailIntent);
+                break;
+            case R.id.ln_change_pass:
+                intent = new Intent(getActivity(), ChangePassActivity.class);
+                startActivity(intent);
                 break;
         }
     }

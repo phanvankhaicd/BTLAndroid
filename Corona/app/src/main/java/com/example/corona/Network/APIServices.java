@@ -1,6 +1,7 @@
 package com.example.corona.Network;
 
 
+import com.example.corona.Model.ChangePass.ChangePassRespone;
 import com.example.corona.Model.HealthMonitor.HealthMonitor;
 import com.example.corona.Model.PostHealthMonitor.SendHealthMonitor;
 import com.example.corona.Model.ReflectionRS.Reflection;
@@ -9,6 +10,7 @@ import com.example.corona.Model.TokenFirebase.DeviceTokenFireBase;
 import com.example.corona.Model.Update.UpdateAccountRS;
 import com.example.corona.Model.User;
 import com.example.corona.Model.UserInfoRS.UserInfo;
+import com.example.corona.Network.Body.ChangePass;
 import com.example.corona.Network.Body.CreateDeclare;
 import com.example.corona.Network.Body.DeviceToken;
 import com.example.corona.Network.Body.ReflectionInfo;
@@ -39,6 +41,8 @@ public interface APIServices {
     @POST("updateTokenDevice")
     Call<DeviceTokenFireBase> updateFirebaseToken(@Body DeviceToken deviceToken, @Header("authorization") String token);
 
+    @POST("api/account/change-password")
+    Call<ChangePassRespone> changePass(@Body ChangePass pass, @Header("authorization") String token);
     //    register
     @POST("register")
     Call<Register> register(@Body NewAccount user);

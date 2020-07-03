@@ -106,6 +106,30 @@
             android:textColor="@color/colorBlack" />
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/ln_change_pass"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/custom_bg_user_menu"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_user_menu"
+            android:padding="5dp"
+            android:src="@mipmap/ic_key" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingHorizontal="20dp"
+            android:text="Đổi mật khẩu"
+            android:textColor="@color/colorBlack" />
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/ln_logout"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"

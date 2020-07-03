@@ -46,6 +46,7 @@ import retrofit2.Response;
 
 import static com.example.corona.Util.AppConfig.getToken;
 import static com.example.corona.Util.AppConfig.handleTokenFirebase;
+import static com.example.corona.Util.AppConfig.setLoginWithSocial;
 import static com.example.corona.Util.AppConfig.setToken;
 
 //import com.orhanobut.logger.Logger;
@@ -168,6 +169,7 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
                     setToken(LoginAcitivy.this, response.body().getData().getToken());
                     Toast.makeText(LoginAcitivy.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     loadingDialog.dismissLoadingDialog();
+                    setLoginWithSocial(LoginAcitivy.this);
                     handleTokenFirebase();
                 } else {
                     Toast.makeText(LoginAcitivy.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -270,6 +272,7 @@ public class LoginAcitivy extends AppCompatActivity implements View.OnClickListe
                             setToken(LoginAcitivy.this, response.body().getData().getToken());
                             Toast.makeText(LoginAcitivy.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                             loadingDialog.dismissLoadingDialog();
+                            setLoginWithSocial(LoginAcitivy.this);
                             handleTokenFirebase();
 
                         } else {

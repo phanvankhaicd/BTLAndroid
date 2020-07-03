@@ -27,6 +27,19 @@ public class AppConfig {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getString("token", "");
     }
+
+    public static void setLoginWithSocial(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("social", "1");
+        editor.apply();
+    }
+
+    public static String getLoginWithSocial(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getString("social", "");
+    }
+
     public static String numberWithComas(String number){
         double amount = Double.parseDouble(number);
         DecimalFormat formatter = new DecimalFormat("#,###");

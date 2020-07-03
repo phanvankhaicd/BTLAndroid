@@ -7,10 +7,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.corona.Model.Declare;
@@ -48,17 +50,35 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
     CheckBox cbHo, cbSot, cbKhoTho, cbDauNguoi, cbTot;
     Button btnSent;
     LoadingDialog loadingDialog;
-
+    int page = 0;
+    boolean lastpage = false;
+    ProgressBar progressBar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_declare, container, false);
         init(view);
+
         data = new ArrayList<>();
         adapter = new HistoryDeclareAdapter(data, getContext());
         lv.setAdapter(adapter);
-        getDeclare();
+        lv.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount != 0 && !lastpage) {
+
+                    showProgressBar(true);
+                    page++;
+                    getDeclare(page);
+                }
+            }
+        });
         onClickCheckBox();
         onSent();
         return view;
@@ -73,13 +93,14 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
         });
     }
 
-    void uncheck(){
+    void uncheck() {
         cbSot.setChecked(false);
         cbDauNguoi.setChecked(false);
         cbKhoTho.setChecked(false);
         cbHo.setChecked(false);
         cbTot.setChecked(false);
     }
+
     private void checkSubmit() {
         if ((!cbDauNguoi.isChecked())
                 && (!cbSot.isChecked())
@@ -93,19 +114,21 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
 
     private void createDeclare() {
         CreateDeclare body = new CreateDeclare(
-                cbSot.isChecked() ? 1 :0,
-                cbHo.isChecked() ? 1 :0,
-                cbKhoTho.isChecked() ? 1 :0,
-                cbDauNguoi.isChecked() ? 1 :0,
-                cbTot.isChecked() ? 1 :0
-                );
+                cbSot.isChecked() ? 1 : 0,
+                cbHo.isChecked() ? 1 : 0,
+                cbKhoTho.isChecked() ? 1 : 0,
+                cbDauNguoi.isChecked() ? 1 : 0,
+                cbTot.isChecked() ? 1 : 0
+        );
 
         DataServices.getAPIService().createDeclare(body, getToken(getContext()))
                 .enqueue(new Callback<SendHealthMonitor>() {
                     @Override
                     public void onResponse(Call<SendHealthMonitor> call, Response<SendHealthMonitor> response) {
-                        if(response.body().getErrorCode() == 0){
-                            getDeclare();
+                        if (response.body().getErrorCode() == 0) {
+                            page = 0;
+                            lastpage = false;
+                            getDeclare(page);
                             uncheck();
                         }
                     }
@@ -116,19 +139,7 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
 
                     }
                 });
-//                .enqueue(new Callback<Declare>() {
-//                    @Override
-//                    public void onResponse(Call<Declare> call, Response<Declare> response) {
-//                        if(response.isSuccessful()){
-//                            getDeclare();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<Declare> call, Throwable t) {
-//                        Toast.makeText(getContext(), "Vui long thu lai!", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+
     }
 
     @Override
@@ -181,28 +192,30 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
         }
     }
 
-    void getDeclare() {
-        loadingDialog.startLoadingDialog();
-        DataServices.getAPIService().callHistoryDeclare("0", "10", getToken(getContext()))
+    void getDeclare(final int page) {
+        DataServices.getAPIService().callHistoryDeclare(page + "", "10", getToken(getContext()))
                 .enqueue(new Callback<HealthMonitor>() {
                     @Override
                     public void onResponse(Call<HealthMonitor> call, Response<HealthMonitor> response) {
 //                        Toast.makeText(getContext(), "oke", Toast.LENGTH_SHORT).show();
                         if (response.body().getErrorCode() == 0) {
-                            data.clear();
+                            if (page == 0)
+                                data.clear();
+                            if(response.body().getData().getItemDeclare().size() == 0){
+                                lastpage = true;
+                            }
                             data.addAll((ArrayList<ItemDeclare>) response.body().getData().getItemDeclare());
                             adapter.notifyDataSetChanged();
-                            loadingDialog.dismissLoadingDialog();
-                        }
-                        else{
-                            loadingDialog.dismissLoadingDialog();
+                            showProgressBar(false);
+                        } else {
                             Toast.makeText(getContext(), "Vui lòng kiểm tra lại đường truyền!", Toast.LENGTH_SHORT).show();
+                            showProgressBar(false);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<HealthMonitor> call, Throwable t) {
-
+                        showProgressBar(false);
                     }
                 });
 //                .enqueue(new Callback<List<Declare>>() {
@@ -228,6 +241,10 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
 //                });
     }
 
+    private void showProgressBar(boolean b) {
+        progressBar.setActivated(b);
+    }
+
     private void init(View view) {
         lv = view.findViewById(R.id.lv_history);
         cbHo = view.findViewById(R.id.checkbox_ho);
@@ -237,6 +254,9 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
         cbTot = view.findViewById(R.id.checkbox_suc_khoe_tot);
         btnSent = view.findViewById(R.id.btn_sent);
         loadingDialog = new LoadingDialog(getActivity());
+        getDeclare(page);
+        progressBar = view.findViewById(R.id.progress_bar);
+        showProgressBar(true);
     }
 
 
