@@ -134,7 +134,7 @@ public class HomeFragment extends Fragment implements PermissionsListener, View.
 //                    });
                     mapboxMap.setStyle(new Style.Builder().fromUri(Style.MAPBOX_STREETS)
                                     .withImage(ICON_ID,
-                                            BitmapFactory.decodeResource(getActivity().getResources(), R.mipmap.ic_vietnam))
+                                            BitmapFactory.decodeResource(getActivity().getResources(), R.mipmap.ic_waning))
                                     .withSource(new GeoJsonSource(ICON_SOURCE_ID,
                                             FeatureCollection.fromFeatures(symbolLayerIconFeatureList)))
                                     .withLayer(new SymbolLayer(ICON_LAYER_ID, ICON_SOURCE_ID)
