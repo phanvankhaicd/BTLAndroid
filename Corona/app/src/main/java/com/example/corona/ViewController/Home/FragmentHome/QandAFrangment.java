@@ -85,7 +85,6 @@ public class QandAFrangment extends Fragment implements CompoundButton.OnChecked
         lnCall = view.findViewById(R.id.ln_call);
         btnSent = view.findViewById(R.id.btn_sent);
         cbDieuKhoan = view.findViewById(R.id.checkbox_dieukhoan);
-        handleCheckbox(cbDieuKhoan.isChecked());
         cbqt1 = view.findViewById(R.id.checkbox_qt1);
         cbqt2 = view.findViewById(R.id.checkbox_qt2);
         cbqt3 = view.findViewById(R.id.checkbox_qt3);
@@ -93,6 +92,7 @@ public class QandAFrangment extends Fragment implements CompoundButton.OnChecked
         edtAddress = view.findViewById(R.id.edt_address);
         lnDate = view.findViewById(R.id.ln_date);
         tvDateTime = view.findViewById(R.id.tv_date);
+        handleCheckbox(cbDieuKhoan.isChecked());
         loadingDialog = new LoadingDialog(getActivity());
     }
 

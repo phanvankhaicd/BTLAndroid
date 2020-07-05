@@ -60,9 +60,11 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
         View view = inflater.inflate(R.layout.fragment_declare, container, false);
         init(view);
 
+        //set up listview
         data = new ArrayList<>();
         adapter = new HistoryDeclareAdapter(data, getContext());
         lv.setAdapter(adapter);
+
         lv.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -71,6 +73,7 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                //firstVisibleItem + visibleItemCount == totalItemCount la cuoi trang chua
                 if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount != 0 && !lastpage) {
 
                     showProgressBar(true);
@@ -80,6 +83,7 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
             }
         });
         onClickCheckBox();
+        //gui thong tin
         onSent();
         return view;
     }
@@ -92,7 +96,7 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
             }
         });
     }
-
+    //Bo check
     void uncheck() {
         cbSot.setChecked(false);
         cbDauNguoi.setChecked(false);
@@ -101,6 +105,8 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
         cbTot.setChecked(false);
     }
 
+
+    //check xem da co thong tin duoc tick chưa
     private void checkSubmit() {
         if ((!cbDauNguoi.isChecked())
                 && (!cbSot.isChecked())
@@ -242,7 +248,10 @@ public class DeclareFragment extends Fragment implements CompoundButton.OnChecke
     }
 
     private void showProgressBar(boolean b) {
-        progressBar.setActivated(b);
+        if (b)
+            progressBar.setVisibility(View.VISIBLE);
+        else
+            progressBar.setVisibility(View.GONE);
     }
 
     private void init(View view) {

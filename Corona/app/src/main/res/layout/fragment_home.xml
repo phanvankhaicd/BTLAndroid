@@ -246,16 +246,16 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         >
-        <Button
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@drawable/custom_btn_send"
-            android:text="Hướng dẫn phòng chồng dịch"
-            android:layout_marginRight="5dp"
-            android:textColor="@color/colorWhite"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+<!--        <Button-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="@drawable/custom_btn_send"-->
+<!--            android:text="Hướng dẫn phòng chồng dịch"-->
+<!--            android:layout_marginRight="5dp"-->
+<!--            android:textColor="@color/colorWhite"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold" />-->
         <Button
             android:id="@+id/btn_analytic"
             android:layout_marginLeft="5dp"
@@ -263,7 +263,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/custom_btn_send"
-            android:text="Thống kê dịch bệnh tuần qua"
+            android:text="Thống kê dịch bệnh"
             android:textColor="@color/colorWhite"
             android:textSize="18sp"
             android:textStyle="bold" />

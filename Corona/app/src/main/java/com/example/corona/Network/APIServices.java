@@ -50,6 +50,7 @@ public interface APIServices {
     @POST("api/account/update")
     Call<UpdateAccountRS> updateAccount(@Body UpdateAccount user, @Header("authorization") String token);
 
+    //history getmonitor
     @GET("api/health-monitor")
 //    @Headers("token: string")
     Call<HealthMonitor> callHistoryDeclare(@Query("page") String page, @Query("size") String size, @Header("authorization") String token);

@@ -62,8 +62,10 @@ public class ChangePassActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
     private void changePass() {
         ChangePass pass = new ChangePass(edtOldPass.getText().toString(),edtNewPass.getText().toString());
+
         DataServices.getAPIService().changePass(pass, AppConfig.getToken(this))
                 .enqueue(new Callback<ChangePassRespone>() {
                     @Override
@@ -87,7 +89,6 @@ public class ChangePassActivity extends AppCompatActivity {
         edtOldPass = findViewById(R.id.edt_old_password);
         edtRetype = findViewById(R.id.edt_retype_password);
         btnChange = findViewById(R.id.btn_change_pass);
-
         toolbar = findViewById(R.id.toolbar);
     }
 }
