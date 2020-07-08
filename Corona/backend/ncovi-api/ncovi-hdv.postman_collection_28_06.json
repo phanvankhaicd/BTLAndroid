@@ -1,0 +1,792 @@
+{
+	"info": {
+		"_postman_id": "453de243-970f-471f-ae74-7b91d47025d1",
+		"name": "ncovi-hdv",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "list map data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://maps.vnpost.vn/apps/covid19/api/patientapi/list",
+					"protocol": "https",
+					"host": [
+						"maps",
+						"vnpost",
+						"vn"
+					],
+					"path": [
+						"apps",
+						"covid19",
+						"api",
+						"patientapi",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://www.trackcorona.live/api/countries/vn",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://www.trackcorona.live/api/countries/vn",
+					"protocol": "http",
+					"host": [
+						"www",
+						"trackcorona",
+						"live"
+					],
+					"path": [
+						"api",
+						"countries",
+						"vn"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://corona-api.com/countries/vn",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://corona-api.com/countries/vn",
+					"protocol": "https",
+					"host": [
+						"corona-api",
+						"com"
+					],
+					"path": [
+						"countries",
+						"vn"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://webapi.dantri.com.vn/corona-info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://webapi.dantri.com.vn/corona-info",
+					"protocol": "https",
+					"host": [
+						"webapi",
+						"dantri",
+						"com",
+						"vn"
+					],
+					"path": [
+						"corona-info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "send notify multi devices",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token-ncovi}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"tokens\": [\"diYtjHrnSZmgQTlJIoKDn3:APA91bFHaoWuUmso8JnY7i_JziJEnq_81_GGeOZatNADCJcrmmz00pWWee1GBH1yDvQtmBktwEcPJCip00kX6yEFEmD5gie6YiKu2B7w3_zdMcTfUSvpbpD1qmg5JMJmSjfu1bMeXizd\"\n\t],\n\t\"data\" : \"data test multi\",\n\t\"title\" : \"title multi\",\n\t\"body\" : \"body multi\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8099/ncovi/sendMultiDevices",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"ncovi",
+						"sendMultiDevices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login with facebook",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3bb1f780-b1ed-41d7-93a2-c66bf6a69380",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"token-ncovi\", data.data.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"token\": \"EAADejeCclTIBAIYJt2NJkGfTzxlOyJats1PEoi7kKxlwFd3i8Ewbdjkqclfyq7TZBfJfZAnKBwrvomfw3NKucANkTXfZCM1mYgjTEmyDf5fe2VyfbsinQItkqWpxUCv5Ct7lfmHbSFlZBeSVIRvFYry4xlpHqv02fIKUraI5ZBowHVtEXc15j\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/loginFacebook",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"loginFacebook"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getListSocialAccount",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token-ncovi}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/account/getListSocialAccount",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"account",
+						"getListSocialAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addFacebook",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token-ncovi}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"token\" : \"EAADejeCclTIBAIYJt2NJkGfTzxlOyJats1PEoi7kKxlwFd3i8Ewbdjkqclfyq7TZBfJfZAnKBwrvomfw3NKucANkTXfZCM1mYgjTEmyDf5fe2VyfbsinQItkqWpxUCv5Ct7lfmHbSFlZBeSVIRvFYry4xlpHqv02fIKUraI5ZBowHVtEXc15j\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/account/addFacebook",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"account",
+						"addFacebook"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addGoogle",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token-ncovi}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"token\" : \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/account/addGoogle",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"account",
+						"addGoogle"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteAccount",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token-ncovi}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"accountId\": 13\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/account/deleteAccount",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"account",
+						"deleteAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sendNotification",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token-ncovi}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"token\": \"diYtjHrnSZmgQTlJIoKDn3:APA91bFHaoWuUmso8JnY7i_JziJEnq_81_GGeOZatNADCJcrmmz00pWWee1GBH1yDvQtmBktwEcPJCip00kX6yEFEmD5gie6YiKu2B7w3_zdMcTfUSvpbpD1qmg5JMJmSjfu1bMeXizd\",\n\t\"data\" : \"data single\",\n\t\"title\" : \"title single\",\n\t\"body\" : \"body single\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/sendNotification",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"sendNotification"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateTokenDevice",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token-ncovi}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"deviceToken\" : \"abc\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/updateTokenDevice",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"updateTokenDevice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"tungtung\",\r\n    \"password\": \"123\",\r\n    \"fullname\": \"Hoang Manh Tung\",\r\n    \"email\": \"tung@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login with nomal email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b19eb68f-7177-46a2-b612-d059fb1eaa97",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"token-ncovi\", data.data.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"ducmp\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Account",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "{{token-ncovi}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userFullname\": \"Pham Minh Duc\",\r\n    \"userEmail\": \"duc123@gmail.com\",\r\n    \"userBirthday\": \"2020-06-12\",\r\n    \"userAddress\":\"ha Noi\",\r\n    \"userPhoneNo\":\"0395592104\",\r\n    \"userCmt\":\"1724595952\",\r\n    \"userBhxh\":\"123123123\",\r\n    \"userGender\":\"0\"\r\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/account/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"account",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change Password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "{{token-ncovi}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"oldPassword\": \"1234567\",\r\n    \"newPassword\": \"123456\"\r\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/account/change-password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"account",
+						"change-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send Health Monitor",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "{{token-ncovi}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"healthMonitorSick\": 1,\r\n    \"healthMonitorCough\": 0,\r\n    \"healthMonitorSultry\": 0,\r\n    \"healthMonitorTired\": 1,\r\n    \"healthMonitorGood\": 0\r\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/health-monitor/send",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"health-monitor",
+						"send"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get List Health Monitor ",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "{{token-ncovi}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8082/api/health-monitor?page=2&size=5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"health-monitor"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						},
+						{
+							"key": "size",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reflection contact",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "{{token-ncovi}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"reflectionContactQuestion1\": 1,\r\n    \"reflectionContactQuestion2\": 1,\r\n    \"reflectionContactQuestion3\": 0\r\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/reflection/contact",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"reflection",
+						"contact"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reflection Info",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "{{token-ncovi}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"reflectionInfoQuestion1\": 0,\r\n    \"reflectionInfoQuestion2\": 1,\r\n    \"reflectionInfoQuestion3\": 1,\r\n    \"reflectionInfoDescription\": \"ahihi do' ngok\",\r\n    \"reflectionInfoTime\": \"2020-06-13T17:58:54.257\",\r\n    \"reflectionInfoAddress\":\"ha noi\"\r\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/reflection/info",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"reflection",
+						"info"
+					],
+					"query": [
+						{
+							"key": "authorization",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "Conte",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getUserInfo",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token-ncovi}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/account/info",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"account",
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "loginGoogle",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cc60d483-5cc5-4dae-b612-4e52d7e9b197",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"token-ncovi\", data.data.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"token\": \"EAALA9Sfujt0BANP6YPvHYZAiUCyekCZCEOEdhSBeO6v4ZCEaph44F4oGVeZAWQ9y45ZAAXFhz4NHA9mDRrHEozikarQkT5VA2reSgEZCjHxYnWhcU5ZBbR1dSedhWF0IhvrwEaSJm3DrR23MMZBi9DOqdGFS8XEDHPzZBaMcbH4fuIZB4KUG5gtZBKg\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/loginGoogle",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"loginGoogle"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -1,0 +1,329 @@
+{
+	"info": {
+		"_postman_id": "e6479817-fc90-4705-84b8-6be04337b57a",
+		"name": "ncovi-hdv",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "https://maps.vnpost.vn/apps/covid19/api/patientapi/list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://maps.vnpost.vn/apps/covid19/api/patientapi/list",
+					"protocol": "https",
+					"host": [
+						"maps",
+						"vnpost",
+						"vn"
+					],
+					"path": [
+						"apps",
+						"covid19",
+						"api",
+						"patientapi",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://www.trackcorona.live/api/countries/vn",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://www.trackcorona.live/api/countries/vn",
+					"protocol": "http",
+					"host": [
+						"www",
+						"trackcorona",
+						"live"
+					],
+					"path": [
+						"api",
+						"countries",
+						"vn"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://corona-api.com/countries/vn",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://corona-api.com/countries/vn",
+					"protocol": "https",
+					"host": [
+						"corona-api",
+						"com"
+					],
+					"path": [
+						"countries",
+						"vn"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://webapi.dantri.com.vn/corona-info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://webapi.dantri.com.vn/corona-info",
+					"protocol": "https",
+					"host": [
+						"webapi",
+						"dantri",
+						"com",
+						"vn"
+					],
+					"path": [
+						"corona-info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8099/ncovi/sendMultiDevices",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"tokens\": [\"diYtjHrnSZmgQTlJIoKDn3:APA91bFHaoWuUmso8JnY7i_JziJEnq_81_GGeOZatNADCJcrmmz00pWWee1GBH1yDvQtmBktwEcPJCip00kX6yEFEmD5gie6YiKu2B7w3_zdMcTfUSvpbpD1qmg5JMJmSjfu1bMeXizd\"\n\t],\n\t\"data\" : \"data test multi\",\n\t\"title\" : \"title multi\",\n\t\"body\" : \"body multi\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8099/ncovi/sendMultiDevices",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"ncovi",
+						"sendMultiDevices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8099/ncovi/loginFacebook",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"token\": \"EAALA9Sfujt0BANP6YPvHYZAiUCyekCZCEOEdhSBeO6v4ZCEaph44F4oGVeZAWQ9y45ZAAXFhz4NHA9mDRrHEozikarQkT5VA2reSgEZCjHxYnWhcU5ZBbR1dSedhWF0IhvrwEaSJm3DrR23MMZBi9DOqdGFS8XEDHPzZBaMcbH4fuIZB4KUG5gtZBKg\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8099/ncovi/loginFacebook",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"ncovi",
+						"loginFacebook"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8099/ncovi/loginFacebook",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8099/ncovi/getListSocialAccount",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"ncovi",
+						"getListSocialAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8099/ncovi/addFacebook",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userId\" : 1,\n\t\"token\" : \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8099/ncovi/addFacebook",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"ncovi",
+						"addFacebook"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8099/ncovi/addGoogle",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userId\" : 1,\n\t\"token\" : \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8099/ncovi/addGoogle",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"ncovi",
+						"addGoogle"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8099/ncovi/deleteAccount",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"accountId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8099/ncovi/deleteAccount",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"ncovi",
+						"deleteAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8099/ncovi/sendNotification",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"token\": \"diYtjHrnSZmgQTlJIoKDn3:APA91bFHaoWuUmso8JnY7i_JziJEnq_81_GGeOZatNADCJcrmmz00pWWee1GBH1yDvQtmBktwEcPJCip00kX6yEFEmD5gie6YiKu2B7w3_zdMcTfUSvpbpD1qmg5JMJmSjfu1bMeXizd\",\n\t\"data\" : \"data single\",\n\t\"title\" : \"title single\",\n\t\"body\" : \"body single\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8099/ncovi/sendNotification",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"ncovi",
+						"sendNotification"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8099/ncovi/updateTokenDevice",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userId\" : 1,\n\t\"deviceToken\" : \"abc\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8099/ncovi/updateTokenDevice",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8099",
+					"path": [
+						"ncovi",
+						"updateTokenDevice"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
