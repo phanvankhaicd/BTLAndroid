@@ -5,29 +5,14 @@ target/
 !**/src/main/**
 !**/src/test/**
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+### Database ### 
+MariaDB
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
+### Backend ###
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
+SpringBoot
 
-### VS Code ###
-.vscode/
-/.idea/
+### Application ### 
+Android Studio
+Java
+
